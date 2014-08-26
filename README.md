@@ -1,4 +1,4 @@
-rider
+Rider
 =====
 Python Web Application Framework - powered by Falcon, inspired by Django
 
