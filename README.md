@@ -2,16 +2,18 @@ Rider
 =====
 Python Web Application Framework - powered by Falcon, inspired by Django
 
+It provides system without compromise.
+
 vision
 ======
-be thin
-be simple
-be clean
-be elegant
+* be thin
+* be simple
+* be clean
+* be elegant
 
-try consistent
-try to be fast
-try not to be magic
+* try consistent
+* try to be fast
+* try not to be magic
 
 TODO:
 
