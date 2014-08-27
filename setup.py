@@ -2,10 +2,10 @@
 from setuptools import setup, find_packages
 
 NAME = "Rider"
-DESCRIPTION = "Nagios passive checks support"
+DESCRIPTION = "Python Web Application Framework"
 AUTHOR = "Jan Češpivo (http://www.cespivo.cz/)"
 AUTHOR_EMAIL = "jan.cespivo@gmail.com"
-URL = "http://www.riderframework.com"
+URL = "http://www.riderframework.com/"
 VERSION = '0.0.1a'
 REQUIRES = ['falcon']
 
