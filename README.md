@@ -1,6 +1,6 @@
 Rider
 =====
-Python Web Application Framework - powered by Falcon, inspired by Django
+Python Web Application Framework - powered by Falcon (http://falconframework.org/), inspired by Django
 
 Rider provides the system with flexibility to create complex projects.
 
@@ -16,8 +16,12 @@ vision
 * try not to be magic
 
 TODO:
+======
+* needs tests!
+* needs documentation!
 
-* consider ClassBase views
+* consider ClassBase / function views
 * consider components and dependency
 * autoloaders vs explicit imports
-* Falcon + SQLAlchemy + Jinja2/tenjin + WTForms
+* ? SQLAlchemy + Jinja2/tenjin + WTForms ?
+* support for I18N and L10N
