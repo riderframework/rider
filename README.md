@@ -7,7 +7,7 @@ Rider provides the system with flexibility to create complex projects.
 ### Install ###
 
 ```bash
-$ pip install rider
+$ pip install rider==0.0.1a
 ```
 
 ### Vision ###
