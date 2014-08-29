@@ -1,4 +1,2 @@
-from exceptions import *
-from views import *
-from routes import *
+from routes import route, application
 

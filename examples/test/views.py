@@ -1,17 +1,20 @@
-from rider import View
-from rider import Http404
+from rider.views import HTMLView, JSONView, View
+from rider.http import Http404
 
 
 class IndexView(View):
     def get(self, request):
-        return 'Rider!'
+        return 'TEXT Rider!'
 
 
-class TestView(View):
+class TestView(HTMLView):
     def get(self, request):
-        return 'test'
+        return '<html>HTML test</html>'
 
-
-class Test404View(View):
+class TestJSView(JSONView):
     def get(self, request):
-        raise Http404('test 404')
+        return {'a': 'b', 'c': [1, 2]}
+
+class Test404HtmlView(HTMLView):
+    def get(self, request):
+        raise Http404('<html>html test 404</html>')
