@@ -25,7 +25,7 @@ Vision
 Contribution
 ------------
 
-Communication channels
-~~~~~~~~~~~~~~~~~~~~~~
+##Communication channels##
+
 Basic ideas and todos:
 https://trello.com/riderframework
