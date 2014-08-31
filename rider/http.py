@@ -1,1 +1,1 @@
-from rider.exceptions import Http404
+from rider.exceptions import Http404, HttpRedirect, HttpPermanentRedirect

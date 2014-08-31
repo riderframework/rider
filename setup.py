@@ -6,8 +6,8 @@ DESCRIPTION = "Python Web Application Framework"
 AUTHOR = "Jan Češpivo (http://www.cespivo.cz/)"
 AUTHOR_EMAIL = "jan.cespivo@gmail.com"
 URL = "http://www.riderframework.com/"
-VERSION = '0.1.0a'
-REQUIRES = ['falcon']
+VERSION = '0.1.1a'
+REQUIRES = ['falcon', 'six']
 
 setup(
     name=NAME,

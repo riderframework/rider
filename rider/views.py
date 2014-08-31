@@ -2,9 +2,9 @@ import falcon
 import json
 import six
 from functools import wraps
-from exceptions import Http404
+from exceptions import HttpException
 
-__all__ = ('View', 'HTMLView', 'JSONView')
+__all__ = ('DataView', 'StreamView', 'TextView', 'HtmlView', 'JsonView')
 
 
 class View(object):
@@ -17,46 +17,52 @@ class View(object):
                 setattr(self,
                     'on_%s' % method_name,
                     self._wrap_response(
-                        self._wrap_convert(
-                            getattr(self, method_name)
-                        )
+                        getattr(self, method_name)
                     )
                 )
             except AttributeError:
                 pass
 
-    def _wrap_convert(self, method):
-        if hasattr(self, 'convert'):
-            convert_method = six.get_unbound_function(self.convert)
-            @wraps(method)
-            def wrapper(request, *args, **kwargs):
-                return convert_method(method(request, *args, **kwargs))
-            return wrapper
-        return method
 
     def _wrap_response(self, method):
         @wraps(method)
         def wrapper(request, response, *args, **kwargs):
             try:
-                ret = method(request, *args, **kwargs)
-                response.body = method(request, *args, **kwargs)
-            except Http404 as e:
-                if hasattr(self, 'convert'):
-                    response.body = self.convert(e.body)
-                else:
-                    response.body = e.body
-                response.status = falcon.HTTP_404
+                setattr(response, self.response_type, method(request, *args, **kwargs))
+            except HttpException as e:
+                response.content_type = self.__class__.content_type
+                e.set_response(response)
             else:
                 response.status = falcon.HTTP_200
-            finally:
                 response.content_type = self.content_type
         return wrapper
 
 
-class HTMLView(View):
+class DataView(View):
+    response_type = 'data'
+
+
+class StreamView(View):
+    response_type = 'stream'
+
+
+class TextView(View):
+    response_type = 'body'
+
+    def _wrap_response(self, method):
+        if hasattr(self, 'convert'):
+            convert_method = six.get_unbound_function(self.convert)
+            @wraps(method)
+            def wrapper(request, *args, **kwargs):
+                return convert_method(method(request, *args, **kwargs))
+            return super(TextView, self)._wrap_response(wrapper)
+        return super(TextView, self)._wrap_response(method)
+
+
+class HtmlView(TextView):
     content_type = 'text/html'
 
 
-class JSONView(View):
+class JsonView(TextView):
     content_type = 'application/json'
     convert = json.dumps
