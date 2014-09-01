@@ -1,6 +1,6 @@
 import falcon
 from rider.views import View
-
+from rider.utils import import_object
 application = falcon.API()
 
 
@@ -13,28 +13,23 @@ def include(module, namespace=''):
     return route_include
 
 
-def route(url, inp, name=''):
-    if callable(inp) and inp.__name__ == 'route_include':
+def route(url, uni_view, name=''):
+    #TODO rethink and refactorize
+    if callable(uni_view) and uni_view.__name__ == 'route_include':
         base_url.append(url)
-        inp()
+        uni_view()
         del base_url[-1]
         return
 
-    if type(inp) == str:
-        mod_dot = inp.split('.')
-        module_name = '.'.join(mod_dot[0:-1])
-        view_name = mod_dot[-1]
-        module = __import__(module_name, globals(), locals(), [], 0)
-        view = getattr(module, view_name)()
-    else:
-        try:
-            if issubclass(inp, View):
-                view = inp()
-            else:
-                #TODO explanation
-                raise Exception()
-        except TypeError:
+    if type(uni_view) == str:
+        uni_view = import_object(uni_view)
+
+    try:
+        if not issubclass(uni_view, View):
             #TODO explanation
             raise Exception()
-    application.add_route('%s%s' % (''.join(base_url), url), view)
+    except TypeError:
+        #TODO explanation
+        raise Exception()
+    application.add_route('%s%s' % (''.join(base_url), url), uni_view())
 

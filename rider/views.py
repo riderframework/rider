@@ -31,6 +31,7 @@ class View(object):
         @wraps(method)
         def wrapper(request, response, *args, **kwargs):
             try:
+                #TODO require return value from method
                 setattr(response, self.response_type, method(request, *args, **kwargs))
             except HttpException as e:
                 response.content_type = self.__class__.content_type
