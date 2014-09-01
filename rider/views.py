@@ -4,10 +4,13 @@ import six
 from functools import wraps
 from exceptions import HttpException
 
-__all__ = ('DataView', 'StreamView', 'TextView', 'HtmlView', 'JsonView')
+__all__ = ('DataView', 'StreamView', 'TextView', 'HtmlView', 'JsonView', 'view')
 
 
 class View(object):
+    '''
+    Wrapper around falcon view api
+    '''
     content_type = 'text/plain'
 
     def __init__(self):
@@ -39,14 +42,23 @@ class View(object):
 
 
 class DataView(View):
+    '''
+    Basic binary data view
+    '''
     response_type = 'data'
 
 
 class StreamView(View):
+    '''
+    Basic stream view
+    '''
     response_type = 'stream'
 
 
 class TextView(View):
+    '''
+    Basic text view
+    '''
     response_type = 'body'
 
     def _wrap_response(self, method):
@@ -60,9 +72,30 @@ class TextView(View):
 
 
 class HtmlView(TextView):
+    '''
+    text/html view
+    '''
     content_type = 'text/html'
 
 
 class JsonView(TextView):
+    '''
+    application/json view
+    '''
     content_type = 'application/json'
     convert = json.dumps
+
+
+def view(ViewClass):
+    '''
+    decorator providing support for functional views
+    '''
+    def wrapper(func):
+        class FunctionView(ViewClass):
+            def __init__(self):
+                for http_method in falcon.HTTP_METHODS:
+                    method_name = http_method.lower()
+                    setattr(self, method_name, func)
+                super(FunctionView, self).__init__()
+        return FunctionView
+    return wrapper
