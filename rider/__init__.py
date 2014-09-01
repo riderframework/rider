@@ -1,2 +1,2 @@
-from routes import route, application
+from routes import application
 

@@ -10,6 +10,7 @@ class Http404(HttpException):
     http_status = falcon.HTTP_404
 
     def __init__(self, body=''):
+        super(Http404, self).__init__()
         self.body = body
 
     def set_response(self, response):
@@ -21,6 +22,7 @@ class HttpRedirect(HttpException):
     http_status = falcon.HTTP_302
 
     def __init__(self, location=''):
+        super(HttpRedirect, self).__init__()
         self.location = location
 
     def set_response(self, response):
