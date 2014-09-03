@@ -20,10 +20,9 @@ def route(url, view, name=''):
         view = import_object(view)
     try:
         if not issubclass(view, View):
-            #TODO explanation
+            # TODO explanation
             raise Exception()
     except TypeError:
-        #TODO explanation
+        # TODO explanation
         raise Exception()
     application.add_route('%s%s' % (''.join(base_url), url), view())
-

@@ -1,0 +1,19 @@
+language: python
+install: pip install tox coveralls --use-mirrors
+env:
+  - TOX_ENV=py26
+  - TOX_ENV=py26_cpython
+  - TOX_ENV=py27
+  - TOX_ENV=py27_cython
+  - TOX_ENV=py32
+  - TOX_ENV=py32_cython
+  - TOX_ENV=py33
+  - TOX_ENV=py33_cython
+  - TOX_ENV=py34
+  - TOX_ENV=py34_cython
+  - TOX_ENV=pypy
+script: tox -e $TOX_ENV
+after_success: coveralls
+notifications:
+  email:
+    - jan.cespivo@gmail.com

@@ -1,6 +1,5 @@
 import falcon
 import json
-import six
 from functools import wraps
 from rider.exceptions import HttpException
 
@@ -17,7 +16,8 @@ class View(object):
         for http_method in falcon.HTTP_METHODS:
             method_name = http_method.lower()
             try:
-                setattr(self,
+                setattr(
+                    self,
                     'on_%s' % method_name,
                     self._wrap_response(
                         getattr(self, method_name)
@@ -26,12 +26,11 @@ class View(object):
             except AttributeError:
                 pass
 
-
     def _wrap_response(self, method):
         @wraps(method)
         def wrapper(request, response, *args, **kwargs):
             try:
-                #TODO require return value from method
+                # TODO require return value from method
                 setattr(response, self.response_type, method(request, *args, **kwargs))
             except HttpException as e:
                 response.content_type = self.__class__.content_type
@@ -64,10 +63,12 @@ class TextView(View):
 
     def _wrap_response(self, method):
         if hasattr(self, 'convert'):
-            convert_method = six.get_unbound_function(self.convert)
+            convert_method = self.convert.__func__
+
             @wraps(method)
             def wrapper(request, *args, **kwargs):
                 return convert_method(method(request, *args, **kwargs))
+
             return super(TextView, self)._wrap_response(wrapper)
         return super(TextView, self)._wrap_response(method)
 

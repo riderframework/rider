@@ -9,7 +9,7 @@ AUTHOR = "Jan Češpivo (http://www.cespivo.cz/)"
 AUTHOR_EMAIL = "jan.cespivo@gmail.com"
 URL = "http://www.riderframework.com/"
 VERSION = '0.1.5a'
-REQUIRES = ['falcon', 'six']
+REQUIRES = ['falcon']
 
 PYPY = True
 CYTHON = False

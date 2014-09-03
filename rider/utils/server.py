@@ -1,6 +1,7 @@
 from rider import application
 from wsgiref.simple_server import make_server
 
+
 def run(host='localhost', port=8080):
     try:
         print('Rider development server is running at http://%s:%d/' % (host, port))
