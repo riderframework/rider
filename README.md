@@ -1,4 +1,4 @@
-Rider
+Rider [![Build Status](https://travis-ci.org/riderframework/rider.svg?branch=master)](https://travis-ci.org/riderframework/rider)
 =====
 Python Web Application Framework - powered by Falcon (http://falconframework.org/), inspired by Django
 
