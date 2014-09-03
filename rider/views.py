@@ -2,7 +2,7 @@ import falcon
 import json
 import six
 from functools import wraps
-from exceptions import HttpException
+from rider.exceptions import HttpException
 
 __all__ = ('DataView', 'StreamView', 'TextView', 'HtmlView', 'JsonView', 'view')
 

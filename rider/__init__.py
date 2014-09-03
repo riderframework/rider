@@ -1,2 +1,2 @@
-from routes import application
+from rider.routes import application
 
