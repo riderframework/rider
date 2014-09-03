@@ -8,7 +8,7 @@ DESCRIPTION = "Python Web Application Framework"
 AUTHOR = "Jan Češpivo (http://www.cespivo.cz/)"
 AUTHOR_EMAIL = "jan.cespivo@gmail.com"
 URL = "http://www.riderframework.com/"
-VERSION = '0.1.4a'
+VERSION = '0.1.5a'
 REQUIRES = ['falcon', 'six']
 
 PYPY = True
@@ -31,7 +31,6 @@ if not PYPY:
 if CYTHON:
     ext_names = (
         'routes',
-        'api_helpers',
         'http',
         'exceptions',
         'views'
@@ -53,7 +52,7 @@ setup(
     author_email=AUTHOR_EMAIL,
     license="Apache 2.0",
     url=URL,
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests']),
     include_package_data=True,
     classifiers=[
         'Development Status :: 3 - Alpha',
