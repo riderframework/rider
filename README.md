@@ -2,8 +2,6 @@ Rider
 =====
 Python Web Application Framework - powered by Falcon (http://falconframework.org/), inspired by Django
 
-Rider provides the system.
-
 Install
 -------
 
