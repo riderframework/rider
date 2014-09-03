@@ -8,7 +8,7 @@ Install
 -------
 
 ```bash
-$ pip install rider==0.1.0a
+$ pip install rider==0.1.4a
 ```
 
 Vision
