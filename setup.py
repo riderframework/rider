@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import imp
 import sys
 from os import path
 from setuptools import setup, find_packages, Extension
@@ -8,7 +9,7 @@ DESCRIPTION = "Python Web Application Framework"
 AUTHOR = "Jan Češpivo (http://www.cespivo.cz/)"
 AUTHOR_EMAIL = "jan.cespivo@gmail.com"
 URL = "http://www.riderframework.com/"
-VERSION = '0.1.5a'
+VERSION = imp.load_source('version', path.join('.', 'rider', 'version.py')).__version__
 REQUIRES = ['falcon']
 
 PYPY = True
