@@ -12,8 +12,7 @@ env:
   - TOX_ENV=pypy
 script:
   - tox -e $TOX_ENV
-  - COVERAGE_FILE=tests/.coverage coverage report -m
-after_success: coveralls
+after_success: cd tests && coveralls
 notifications:
   email:
     - jan.cespivo@gmail.com
