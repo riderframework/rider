@@ -10,7 +10,9 @@ env:
   - TOX_ENV=py34
   - TOX_ENV=py34_cython
   - TOX_ENV=pypy
-script: tox -e $TOX_ENV
+script:
+  - tox -e $TOX_ENV
+  - COVERAGE_FILE=tests/.coverage coverage report -m
 after_success: coveralls
 notifications:
   email:
