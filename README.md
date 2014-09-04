@@ -1,4 +1,4 @@
-Rider [![Build Status](https://travis-ci.org/riderframework/rider.svg?branch=master)](https://travis-ci.org/riderframework/rider) [![Coverage Status](https://coveralls.io/repos/riderframework/rider/badge.png)](https://coveralls.io/r/riderframework/rider)
+Rider [![Build Status](https://travis-ci.org/riderframework/rider.svg?branch=master)](https://travis-ci.org/riderframework/rider) [![Coverage Status](https://coveralls.io/repos/riderframework/rider/badge.png?branch=master)](https://coveralls.io/r/riderframework/rider?branch=master) [![Development Status](https://pypip.in/status/Rider/badge.svg)](https://pypi.python.org/pypi/Rider/) [![License](https://pypip.in/license/Rider/badge.svg)](https://pypi.python.org/pypi/Rider/)
 =====
 Python Web Application Framework - powered by Falcon (http://falconframework.org/), inspired by Django
 
