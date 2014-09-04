@@ -4,7 +4,7 @@ import falcon
 from tests.utils import request_factory, text_data_factory, json_data_factory
 
 from rider.views import DataView, StreamView, TextView, HtmlView, JsonView, view
-from rider.http import Http404, HttpRedirect
+from rider.http import Http404, HttpRedirect, HttpPermanentRedirect
 
 
 def get_text_views(text_data):
@@ -68,9 +68,19 @@ def get_json_views(json_data):
     return TestJsonView404, TestJsonView, test_json_view, test_json_view_404
 
 
-class TestRedirectView(HtmlView):
-    def get(self, request):
-        raise HttpRedirect('/test')
+def get_redirect_views(location):
+    result = []
+    for view_cls in (DataView, StreamView, TextView, HtmlView, JsonView):
+        class TestRedirectView(view_cls):
+            def get(self, request):
+                raise HttpRedirect(location)
+        yield TestRedirectView, falcon.HTTP_302
+
+        class TestPermanentRedirectView(view_cls):
+            def get(self, request):
+                raise HttpPermanentRedirect(location)
+        yield TestPermanentRedirectView, falcon.HTTP_301
+
 
 
 class TestViews(TestCase):
@@ -78,34 +88,47 @@ class TestViews(TestCase):
 
     def test_text_views(self):
         text_data = text_data_factory()
-        response = falcon.Response()
         request = request_factory(url='/')
         for text_view_cls in get_text_views(text_data):
             text_view = text_view_cls()
+            response = falcon.Response()
             text_view.on_get(request, response)
-        result = falcon.api_helpers.get_body(response)
-        self.assertEqual(text_data, result[0].decode('utf-8'))
-        self.assertEqual(response.content_type, 'text/plain')
+            result = falcon.api_helpers.get_body(response)
+            self.assertEqual(text_data, result[0].decode('utf-8'))
+            self.assertEqual(response.content_type, 'text/plain')
 
     def test_html_views(self):
         text_data = text_data_factory()
-        response = falcon.Response()
         request = request_factory(url='/')
         for html_view_cls in get_html_views(text_data):
             html_view = html_view_cls()
+            response = falcon.Response()
             html_view.on_get(request, response)
-        result = falcon.api_helpers.get_body(response)
-        self.assertEqual(text_data, result[0].decode('utf-8'))
-        self.assertEqual(response.content_type, 'text/html')
+            result = falcon.api_helpers.get_body(response)
+            self.assertEqual(text_data, result[0].decode('utf-8'))
+            self.assertEqual(response.content_type, 'text/html')
 
     def test_json_views(self):
         json_data = json_data_factory()
         string_json_data = json_data_factory.as_string()
-        response = falcon.Response()
         request = request_factory(url='/')
         for json_view_cls in get_json_views(json_data):
             json_view = json_view_cls()
+            response = falcon.Response()
             json_view.on_get(request, response)
-        result = falcon.api_helpers.get_body(response)
-        self.assertEqual(string_json_data, result[0].decode('utf-8'))
-        self.assertEqual(response.content_type, 'application/json')
+            result = falcon.api_helpers.get_body(response)
+            print type(result[0])
+            self.assertEqual(string_json_data, result[0].decode('utf-8'))
+            self.assertEqual(response.content_type, 'application/json')
+
+    def test_redirect_views(self):
+        location = '/new_location'
+        request = request_factory(url='/')
+        for redirect_view_cls, status  in get_redirect_views(location):
+            redirect_view = redirect_view_cls()
+            response = falcon.Response()
+            redirect_view.on_get(request, response)
+
+            self.assertEqual(location, response.location)
+            self.assertEqual(response.status, status)
+

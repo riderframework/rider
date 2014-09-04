@@ -5,6 +5,8 @@ class HttpException(Exception):
     def set_response(self, response):
         response.status = self.http_status
 
+    def wrap_self(self, func):
+        return self
 
 class Http404(HttpException):
     http_status = falcon.HTTP_404
@@ -17,6 +19,9 @@ class Http404(HttpException):
         super(Http404, self).set_response(response)
         response.body = self.body
 
+    def wrap_self(self, func):
+        self.body = func(self.body)
+        return super(Http404, self).wrap_self(func)
 
 class HttpRedirect(HttpException):
     http_status = falcon.HTTP_302

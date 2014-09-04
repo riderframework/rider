@@ -67,7 +67,10 @@ class TextView(View):
 
             @wraps(method)
             def wrapper(request, *args, **kwargs):
-                return convert_method(method(request, *args, **kwargs))
+                try:
+                    return convert_method(method(request, *args, **kwargs))
+                except HttpException as e:
+                    raise e.wrap_self(convert_method)
 
             return super(TextView, self)._wrap_response(wrapper)
         return super(TextView, self)._wrap_response(method)
