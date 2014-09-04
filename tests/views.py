@@ -117,7 +117,6 @@ class TestViews(TestCase):
             response = falcon.Response()
             json_view.on_get(request, response)
             result = falcon.api_helpers.get_body(response)
-            print type(result[0])
             self.assertEqual(string_json_data, result[0].decode('utf-8'))
             self.assertEqual(response.content_type, 'application/json')
 
