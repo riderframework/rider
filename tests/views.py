@@ -63,9 +63,28 @@ def get_json_views(json_data):
 
     @view(JsonView)
     def test_json_view_404(request):
-        return json_data
+        raise Http404(json_data)
 
     return TestJsonView404, TestJsonView, test_json_view, test_json_view_404
+
+#def get_stream_views(location):
+     #class TestStreamView404(JsonView):
+        #def get(self, request):
+            #raise Http404(json_data)
+
+    #class TestStreamView(JsonView):
+        #def get(self, request):
+            #return json_data
+
+    #@view(JsonView)
+    #def test_stream_view(request):
+        #return json_data
+
+    #@view(JsonView)
+    #def test_stream_view_404(request):
+        #raise Http404(json_data)
+
+    #return TestJsonView404, TestJsonView, test_json_view, test_json_view_404
 
 
 def get_redirect_views(location):
