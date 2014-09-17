@@ -11,7 +11,10 @@ class View(ResponseSetter):
     '''
     Wrapper around falcon view api
     '''
+    exceptions_mimic = True
+
     def __init__(self):
+        super(View, self).__init__()
         for http_method in falcon.HTTP_METHODS:
             method_name = http_method.lower()
             try:
@@ -31,7 +34,9 @@ class View(ResponseSetter):
             try:
                 self.content = method(request, *args, **kwargs)
             except HttpException as e:
-                e.content_type = self.content_type
+                if self.exceptions_mimic:
+                    e.content_type = self.content_type
+                    e.content_wrapper = self.content_wrapper
                 e.set_response(response)
             else:
                 self.set_response(response)
@@ -50,6 +55,7 @@ class StreamView(View):
     Basic stream view
     '''
     response_type = 'stream'
+    exceptions_mimic = False
 
 
 class TextView(View):
@@ -57,7 +63,6 @@ class TextView(View):
     Basic text view
     '''
     response_type = 'body'
-
 
 
 
@@ -73,10 +78,7 @@ class JsonView(TextView):
     application/json view
     '''
     content_type = 'application/json'
-
-    def get_content(self):
-        # TODO inheritance dont work with property
-        return json.dumps(super(TextView, self).get_content())
+    content_wrapper = json.dumps
 
 
 def view(ViewClass):

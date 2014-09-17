@@ -65,7 +65,7 @@ def get_json_views(json_data):
     def test_json_view_404(request):
         raise Http404(json_data)
 
-    return TestJsonView404, TestJsonView, test_json_view, test_json_view_404
+    return TestJsonView, TestJsonView404, test_json_view, test_json_view_404
 
 #def get_stream_views(location):
      #class TestStreamView404(JsonView):
@@ -105,39 +105,32 @@ def get_redirect_views(location):
 class TestViews(TestCase):
     """Tests for views"""
 
+    def _test_view(self, test_view_cls, request, expected_result, expected_content_type):
+        view = test_view_cls()
+        response = falcon.Response()
+        view.on_get(request, response)
+        result = falcon.api_helpers.get_body(response)
+        self.assertEqual(expected_result, result[0].decode('utf-8'))
+        self.assertEqual(response.content_type, expected_content_type)
+
     def test_text_views(self):
         text_data = text_data_factory()
         request = request_factory(url='/')
         for text_view_cls in get_text_views(text_data):
-            text_view = text_view_cls()
-            response = falcon.Response()
-            text_view.on_get(request, response)
-            result = falcon.api_helpers.get_body(response)
-            self.assertEqual(text_data, result[0].decode('utf-8'))
-            self.assertEqual(response.content_type, 'text/plain')
+            self._test_view(text_view_cls, request, text_data, 'text/plain')
 
     def test_html_views(self):
         text_data = text_data_factory()
         request = request_factory(url='/')
         for html_view_cls in get_html_views(text_data):
-            html_view = html_view_cls()
-            response = falcon.Response()
-            html_view.on_get(request, response)
-            result = falcon.api_helpers.get_body(response)
-            self.assertEqual(text_data, result[0].decode('utf-8'))
-            self.assertEqual(response.content_type, 'text/html')
+            self._test_view(html_view_cls, request, text_data, 'text/html')
 
     def test_json_views(self):
         json_data = json_data_factory()
         string_json_data = json_data_factory.as_string()
         request = request_factory(url='/')
         for json_view_cls in get_json_views(json_data):
-            json_view = json_view_cls()
-            response = falcon.Response()
-            json_view.on_get(request, response)
-            result = falcon.api_helpers.get_body(response)
-            self.assertEqual(string_json_data, result[0].decode('utf-8'))
-            self.assertEqual(response.content_type, 'application/json')
+            self._test_view(json_view_cls, request, string_json_data, 'application/json')
 
     def test_redirect_views(self):
         location = '/new_location'
