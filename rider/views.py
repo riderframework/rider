@@ -2,17 +2,19 @@ import falcon
 import json
 from functools import wraps
 from rider.exceptions import HttpException
+from rider.response import ResponseSetter
 
 __all__ = ('DataView', 'StreamView', 'TextView', 'HtmlView', 'JsonView', 'view')
 
 
-class View(object):
+class View(ResponseSetter):
     '''
     Wrapper around falcon view api
     '''
-    content_type = 'text/plain'
+    exceptions_mimic = True
 
     def __init__(self):
+        super(View, self).__init__()
         for http_method in falcon.HTTP_METHODS:
             method_name = http_method.lower()
             try:
@@ -30,14 +32,14 @@ class View(object):
         @wraps(method)
         def wrapper(request, response, *args, **kwargs):
             try:
-                # TODO require return value from method
-                setattr(response, self.response_type, method(request, *args, **kwargs))
+                self.content = method(request, *args, **kwargs)
             except HttpException as e:
-                response.content_type = self.__class__.content_type
+                if self.exceptions_mimic:
+                    e.content_type = self.content_type
+                    e.content_wrapper = self.content_wrapper
                 e.set_response(response)
             else:
-                response.status = falcon.HTTP_200
-                response.content_type = self.content_type
+                self.set_response(response)
         return wrapper
 
 
@@ -53,6 +55,7 @@ class StreamView(View):
     Basic stream view
     '''
     response_type = 'stream'
+    exceptions_mimic = False
 
 
 class TextView(View):
@@ -61,19 +64,6 @@ class TextView(View):
     '''
     response_type = 'body'
 
-    def _wrap_response(self, method):
-        if hasattr(self, 'convert'):
-            convert_method = self.convert.__func__
-
-            @wraps(method)
-            def wrapper(request, *args, **kwargs):
-                try:
-                    return convert_method(method(request, *args, **kwargs))
-                except HttpException as e:
-                    raise e.wrap_self(convert_method)
-
-            return super(TextView, self)._wrap_response(wrapper)
-        return super(TextView, self)._wrap_response(method)
 
 
 class HtmlView(TextView):
@@ -88,7 +78,7 @@ class JsonView(TextView):
     application/json view
     '''
     content_type = 'application/json'
-    convert = json.dumps
+    content_wrapper = json.dumps
 
 
 def view(ViewClass):
