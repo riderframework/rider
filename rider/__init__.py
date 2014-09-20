@@ -1,2 +1,2 @@
 from rider.routes import application
-from rider.version import __version__
+from rider.info import VERSION as __version__

@@ -4,12 +4,14 @@ import sys
 from os import path
 from setuptools import setup, find_packages, Extension
 
-NAME = "Rider"
-DESCRIPTION = "Python Web Application Framework"
-AUTHOR = "Jan Češpivo (http://www.cespivo.cz/)"
-AUTHOR_EMAIL = "jan.cespivo@gmail.com"
-URL = "http://www.riderframework.com/"
-VERSION = imp.load_source('version', path.join('.', 'rider', 'version.py')).__version__
+info = imp.load_source('info', path.join('.', 'rider', 'info.py'))
+
+NAME = info.NAME
+DESCRIPTION = info.DESCRIPTION
+AUTHOR = info.AUTHOR
+AUTHOR_EMAIL = info.AUTHOR_EMAIL
+URL = info.URL
+VERSION = info.VERSION
 REQUIRES = ['falcon']
 
 PYPY = True
