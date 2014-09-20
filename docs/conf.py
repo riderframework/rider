@@ -47,6 +47,7 @@ copyright = u'2014, Rider'
 #
 # The short X.Y version.
 import imp
+from os import path
 release = imp.load_source('version', path.join('.', 'rider', 'version.py')).__version__
 version = release[:2]
 # The full version, including alpha/beta/rc tags.
