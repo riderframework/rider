@@ -12,7 +12,7 @@ AUTHOR = info.AUTHOR
 AUTHOR_EMAIL = info.AUTHOR_EMAIL
 URL = info.URL
 VERSION = info.VERSION
-REQUIRES = ['falcon']
+REQUIRES = ['falcon', 'jinja2']
 
 PYPY = True
 CYTHON = False

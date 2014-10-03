@@ -1,6 +1,6 @@
 
 def import_module(module):
-    __import__(module, globals(), locals(), [], 0)
+    return __import__(module, globals(), locals(), [], 0)
 
 
 def import_object(dot_path):
