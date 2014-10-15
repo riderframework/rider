@@ -65,7 +65,6 @@ class TextView(View):
     response_type = 'body'
 
 
-
 class HtmlView(TextView):
     '''
     text/html view
