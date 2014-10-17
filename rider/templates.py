@@ -8,4 +8,4 @@ environment = Environment(
 
 def render(template, context):
     template = environment.get_or_select_template(template)
-    return template.render({'conf': conf})
+    return template.render(context)

@@ -15,6 +15,9 @@ def configure(source, target=''):
     elif isinstance(source, ModuleType):
         if not target:
             target = source.__name__.split('.')[-1]
+        if target not in globals():
+            globals()[target] = source
+            return
         source_iterator = [(attr, getattr(source, attr)) for attr in dir(source) if not attr.startswith('__')]
     else:
         raise ConfigurationError()
