@@ -1,5 +1,4 @@
 import falcon
-from functools import wraps
 
 
 class ResponseSetter(object):
