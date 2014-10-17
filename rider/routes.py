@@ -1,5 +1,4 @@
 import falcon
-from functools import wraps
 
 from rider.views import View
 from rider.utils import import_module, import_object
