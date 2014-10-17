@@ -1,21 +1,30 @@
 import falcon
+from functools import wraps
+
 from rider.views import View
 from rider.utils import import_module, import_object
 
 
 application = falcon.API()
 
-
-base_url = []
+#TODO do more robust
+BASE_URL = []
 
 
 def include_routes(url, module, namespace=''):
-    base_url.append(url)
+    BASE_URL.append(url)
     import_module(module)
-    del base_url[-1]
+    del BASE_URL[-1]
 
 
-def route(url, view, name=''):
+def route(url, view=None, name=''):
+    #decorator wrapper
+    if not view:
+        def route_wrapper(cls):
+            route(url, view=cls, name=name)
+            return cls
+        return route_wrapper
+
     if type(view) == str:
         view = import_object(view)
     try:
@@ -25,4 +34,4 @@ def route(url, view, name=''):
     except TypeError:
         # TODO explanation
         raise Exception()
-    application.add_route('%s%s' % (''.join(base_url), url), view())
+    application.add_route('%s%s' % (''.join(BASE_URL), url), view())
