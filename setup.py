@@ -32,17 +32,15 @@ if not PYPY:
         CYTHON = False
 
 if CYTHON:
-    ext_names = (
-        'routes',
-        'http',
-        'exceptions',
-        'views'
-    )
-
     cmdclass = {'build_ext': build_ext}
     ext_modules = [
-        Extension('rider.' + ext, [path.join('rider', ext + '.py')])
-        for ext in ext_names]
+        Extension('rider.views.response', [path.join('rider/views/', 'response.py')]),
+        Extension('rider.views.decorators', [path.join('rider/views/', 'decorators.py')]),
+        Extension('rider.views.exceptions', [path.join('rider/views/', 'exceptions.py')]),
+        Extension('rider.views.__init__', [path.join('rider/views/', '__init__.py')]),
+        Extension('rider.http', [path.join('rider', 'http.py')]),
+        Extension('rider.routes', [path.join('rider', 'routes.py')]),
+    ]
 else:
     cmdclass = {}
     ext_modules = []

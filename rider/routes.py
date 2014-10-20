@@ -1,9 +1,10 @@
+'''
+Route lib
+'''
 import falcon
 
-from rider.views import View, ViewSet
-
 from rider.utils import import_module, import_object
-from types import ModuleType
+from rider.views import View, ViewSet
 
 application = falcon.API()
 
@@ -31,7 +32,7 @@ def include_routes(url, viewset_or_module, namespace=''):
     del BASE_URL[-1]
 
 
-def route(url, view=None, name='', is_method=False):
+def route(url, view=None, name=''):
     #decorator wrapper
     if not view:
         def route_wrapper(cls):

@@ -1,15 +1,16 @@
-import falcon
+from falcon import HTTP_200
 
 
 class ResponseSetter(object):
-    status = falcon.HTTP_200
+    status = HTTP_200
     content_type = 'text/plain'
     response_type = 'body'
     location = None
     content_wrapper = None
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         self.content = None
+        super(ResponseSetter, self).__init__(*args, **kwargs)
 
     def set_response(self, response):
         response.status = self.status

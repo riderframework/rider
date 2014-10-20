@@ -1,12 +1,12 @@
-import falcon
-from rider.response import ResponseSetter
+from falcon import HTTP_404, HTTP_302, HTTP_301
+from rider.views.response import ResponseSetter
 
 
 class HttpException(ResponseSetter, Exception):
     pass
 
 class Http404(HttpException):
-    status = falcon.HTTP_404
+    status = HTTP_404
 
     def __init__(self, body=''):
         super(Http404, self).__init__()
@@ -14,7 +14,7 @@ class Http404(HttpException):
 
 
 class HttpRedirect(HttpException):
-    status = falcon.HTTP_302
+    status = HTTP_302
 
     def __init__(self, location=''):
         super(HttpRedirect, self).__init__()
@@ -22,4 +22,4 @@ class HttpRedirect(HttpException):
 
 
 class HttpPermanentRedirect(HttpRedirect):
-    status = falcon.HTTP_301
+    status = HTTP_301
