@@ -1,19 +1,13 @@
 '''
 Route lib
 '''
-import falcon
-
 from rider.utils import import_module, import_object
 from rider.views import View, ViewSet
-
-application = falcon.API()
-
-#TODO do more robust
-BASE_URL = []
+from rider.routes.urls import push_url, nest_url, pop_url
 
 
 def include_routes(url, viewset_or_module, namespace=''):
-    BASE_URL.append(url)
+    push_url(url)
     try:
         viewset = import_object(viewset_or_module)
         try:
@@ -29,7 +23,7 @@ def include_routes(url, viewset_or_module, namespace=''):
     except AttributeError:
         #ordinary module
         import_module(viewset_or_module)
-    del BASE_URL[-1]
+    pop_url()
 
 
 def route(url, view=None, name=''):
@@ -45,9 +39,9 @@ def route(url, view=None, name=''):
     try:
         if issubclass(view, View):
             if url:
-                application.add_route('%s%s' % (''.join(BASE_URL), url), view())
+                nest_url(url, view)
             for cls_url, cls_url_name in view.get_urls():
-                application.add_route('%s%s' % (''.join(BASE_URL), cls_url), view())
+                nest_url(cls_url, view)
         else:
             #TODO revise text
             raise Exception('bad class')
