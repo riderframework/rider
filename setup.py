@@ -34,12 +34,13 @@ if not PYPY:
 if CYTHON:
     cmdclass = {'build_ext': build_ext}
     ext_modules = [
-        Extension('rider.routes.__init__', [path.join('rider/routes/', '__init__.py')]),
         Extension('rider.routes.urls', [path.join('rider/routes/', 'urls.py')]),
+        Extension('rider.routes.__init__', [path.join('rider/routes/', '__init__.py')]),
         Extension('rider.views.response', [path.join('rider/views/', 'response.py')]),
         Extension('rider.views.decorators', [path.join('rider/views/', 'decorators.py')]),
         Extension('rider.views.exceptions', [path.join('rider/views/', 'exceptions.py')]),
         Extension('rider.views.__init__', [path.join('rider/views/', '__init__.py')]),
+        Extension('rider.core', [path.join('rider', 'core.py')]),
         Extension('rider.http', [path.join('rider', 'http.py')]),
     ]
 else:
