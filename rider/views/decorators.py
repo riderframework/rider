@@ -1,18 +1,21 @@
-from falcon import HTTP_METHODS
 from types import FunctionType
 from functools import wraps, partial
+
+from rider.core import HTTP_METHODS
+
 
 class ViewDecorator(object):
     '''
     Provide decorator functionality for View class
     '''
-    def __new__(cls, function_or_http_method=None):
+    def __new__(cls, *args):
         instance = super(ViewDecorator, cls).__new__(cls)
-        if function_or_http_method is not None:
+        if any(args):
             '''
-            using as decorator
+            usage as decorator
             '''
-            if isinstance(function_or_http_method, FunctionType):
+            function_or_http_method = args[0]
+            if len(args) == 1 and isinstance(function_or_http_method, FunctionType):
                 '''
                 usage as decorator
                 @View
@@ -25,20 +28,14 @@ class ViewDecorator(object):
             elif isinstance(function_or_http_method, str):
                 '''
                 usage as decorator
-                @View('GET')
+                @View('GET', 'POST', ...)
                 '''
-                instance.http_methods = [function_or_http_method]
-
-            elif isinstance(function_or_http_method, list):
-                '''
-                usage as decorator
-                @View(['GET', 'POST'])
-                '''
-                instance.http_methods = function_or_http_method
+                instance.http_methods = args
             else:
                 '''
                 Incorrect usage
                 '''
+                #TODO raise nice exception
                 raise Exception('Incorrect usage of ViewDecorator')
         return instance
 
