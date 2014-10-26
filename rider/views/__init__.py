@@ -15,7 +15,7 @@ class View(ViewDecorator, ResponseSetter):
     '''
     Wrapper around falcon view api
     '''
-    exceptions_mimic = True
+    same_exception_content = True
     urls = {}
 
     @classmethod
@@ -47,7 +47,7 @@ class View(ViewDecorator, ResponseSetter):
             try:
                 self.content = method(request, *args, **kwargs)
             except HttpException as e:
-                if self.exceptions_mimic:
+                if self.same_exception_content:
                     e.content_type = self.content_type
                     e.content_wrapper = self.content_wrapper
                 e.set_response(response)
@@ -82,7 +82,7 @@ class StreamView(View):
     Basic stream view
     '''
     response_type = 'stream'
-    exceptions_mimic = False
+    same_exception_content = False
 
 
 class TextView(View):

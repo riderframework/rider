@@ -1,13 +1,41 @@
 from rider.core import application
 from rider import conf
 
-globals()['__NESTED_URLS__'] = [conf.BASE_URL]
 
-def push_url(url):
-    globals()['__NESTED_URLS__'].append(url)
+_NAMED_URLS = {}
+_NESTED_URLS = [conf.BASE_URL]
+_NESTED_NAMESPACES = ['']
 
-def pop_url():
-    del globals()['__NESTED_URLS__'][-1]
 
-def nest_url(url, view):
-    application.add_route('%s%s' % (''.join(globals()['__NESTED_URLS__']), url), view())
+def push_url(url, namespace):
+    _NESTED_URLS.append(url)
+    if namespace:
+        _NESTED_NAMESPACES.append(namespace)
+
+
+def pop_url(namespace):
+    del _NESTED_URLS[-1]
+    if namespace:
+        del _NESTED_NAMESPACES[-1]
+
+
+def nest_url(url, view, name):
+    url = '%s%s' % (
+            ''.join(_NESTED_URLS),
+            url
+        )
+    if name:
+        name = '%s:%s' % (
+            ':'.join(_NESTED_NAMESPACES),
+            name
+        )
+        _NAMED_URLS[name] = url
+
+    application.add_route(
+        url,
+        view()
+    )
+
+
+def url(name):
+    return _NAMED_URLS[name]
