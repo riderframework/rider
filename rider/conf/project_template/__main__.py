@@ -1,4 +1,5 @@
 import __init__
-from rider.utils import server
+from rider.utils.commands import main
 
-server.run()
+
+main()
