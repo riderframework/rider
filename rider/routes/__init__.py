@@ -27,8 +27,8 @@ def include_routes(url, viewset_or_module, namespace=''):
 
 
 def route(url, view=None, name=''):
-    #decorator wrapper
     if not view:
+        #decorator wrapper
         def route_wrapper(cls):
             cls.add_url(url, name)
             return cls
@@ -41,7 +41,8 @@ def route(url, view=None, name=''):
             if url:
                 nest_url(url, view)
             for cls_url, cls_url_name in view.get_urls():
-                nest_url(cls_url, view)
+                if cls_url:
+                    nest_url(cls_url, view)
         else:
             #TODO revise text
             raise Exception('bad class')
