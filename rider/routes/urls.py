@@ -4,7 +4,7 @@ from rider import conf
 
 _NAMED_URLS = {}
 _NESTED_URLS = [conf.BASE_URL]
-_NESTED_NAMESPACES = ['']
+_NESTED_NAMESPACES = []
 
 
 def push_url(url, namespace):
@@ -24,11 +24,13 @@ def nest_url(url, view, name):
             ''.join(_NESTED_URLS),
             url
         )
+
     if name:
-        name = '%s:%s' % (
-            ':'.join(_NESTED_NAMESPACES),
-            name
-        )
+        if any(_NESTED_NAMESPACES):
+            name = '%s:%s' % (
+                ':'.join(_NESTED_NAMESPACES),
+                name
+            )
         _NAMED_URLS[name] = url
 
     application.add_route(
@@ -39,3 +41,4 @@ def nest_url(url, view, name):
 
 def url(name):
     return _NAMED_URLS[name]
+
