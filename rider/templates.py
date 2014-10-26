@@ -3,6 +3,7 @@ from rider import conf
 from rider.routes import url
 from os import path
 
+
 environment = Environment(
     loader=FileSystemLoader(path.join(conf.BASE_DIR, conf.templates.PATH)),
 )
