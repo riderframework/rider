@@ -12,7 +12,7 @@ AUTHOR = info.AUTHOR
 AUTHOR_EMAIL = info.AUTHOR_EMAIL
 URL = info.URL
 VERSION = info.VERSION
-REQUIRES = ['falcon']
+REQUIRES = ['falcon', 'jinja2']
 
 PYPY = True
 CYTHON = False
@@ -40,6 +40,7 @@ if CYTHON:
         Extension('rider.views.decorators', [path.join('rider/views/', 'decorators.py')]),
         Extension('rider.views.exceptions', [path.join('rider/views/', 'exceptions.py')]),
         Extension('rider.views.__init__', [path.join('rider/views/', '__init__.py')]),
+        Extension('rider.templates', [path.join('rider', 'templates.py')]),
         Extension('rider.core', [path.join('rider', 'core.py')]),
         Extension('rider.http', [path.join('rider', 'http.py')]),
     ]

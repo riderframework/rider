@@ -1,3 +1,5 @@
+import templates
+
 BASE_DIR = ''
 BASE_URL = ''
 
