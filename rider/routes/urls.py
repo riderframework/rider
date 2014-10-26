@@ -1,4 +1,4 @@
-from rider import application
+from rider.core import application
 from rider import conf
 
 globals()['__NESTED_URLS__'] = [conf.BASE_URL]

@@ -1,4 +1,4 @@
-from falcon import API
+from rider.core import application
 from rider.info import VERSION as __version__
 
-application = API()
+
