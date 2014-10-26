@@ -58,7 +58,7 @@ setup(
     url=URL,
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
-    scripts=['rider/bin/rider.py'],
+    scripts=['rider/bin/rider'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
