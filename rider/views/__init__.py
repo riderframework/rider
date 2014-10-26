@@ -1,21 +1,35 @@
-import falcon
 import json
+
 from functools import wraps
-from rider.exceptions import HttpException
-from rider.response import ResponseSetter
 
-__all__ = ('DataView', 'StreamView', 'TextView', 'HtmlView', 'JsonView', 'view')
+from rider.core import HTTP_METHODS
+
+from rider.views.decorators import ViewDecorator
+from rider.views.exceptions import HttpException
+from rider.views.response import ResponseSetter
 
 
-class View(ResponseSetter):
+__all__ = ('DataView', 'StreamView', 'TextView', 'HtmlView', 'JsonView', 'ViewSet')
+
+
+class View(ViewDecorator, ResponseSetter):
     '''
     Wrapper around falcon view api
     '''
-    exceptions_mimic = True
+    same_exception_content = True
+    urls = {}
 
-    def __init__(self):
-        super(View, self).__init__()
-        for http_method in falcon.HTTP_METHODS:
+    @classmethod
+    def get_urls(cls):
+        return cls.urls.get(cls, [])
+
+    @classmethod
+    def add_url(cls, url, name):
+        cls.urls.setdefault(cls, []).append((url, name))
+
+    def __init__(self, *args, **kwargs):
+        super(View, self).__init__(*args, **kwargs)
+        for http_method in HTTP_METHODS:
             method_name = http_method.lower()
             try:
                 setattr(
@@ -34,13 +48,27 @@ class View(ResponseSetter):
             try:
                 self.content = method(request, *args, **kwargs)
             except HttpException as e:
-                if self.exceptions_mimic:
+                if self.same_exception_content:
                     e.content_type = self.content_type
                     e.content_wrapper = self.content_wrapper
                 e.set_response(response)
             else:
                 self.set_response(response)
         return wrapper
+
+
+class ViewSet(object):
+    def get_views(self):
+        for attr_name in dir(self):
+            attr = getattr(self, attr_name)
+            if callable(attr):
+                try:
+                    if issubclass(attr, View):
+                        attr.viewset = self
+                        yield attr
+                except TypeError:
+                    #not class
+                    continue
 
 
 class DataView(View):
@@ -55,7 +83,7 @@ class StreamView(View):
     Basic stream view
     '''
     response_type = 'stream'
-    exceptions_mimic = False
+    same_exception_content = False
 
 
 class TextView(View):
@@ -80,16 +108,6 @@ class JsonView(TextView):
     content_wrapper = json.dumps
 
 
-def view(ViewClass):
-    '''
-    decorator providing support for functional views
-    '''
-    def wrapper(func):
-        class FunctionView(ViewClass):
-            def __init__(self):
-                for http_method in falcon.HTTP_METHODS:
-                    method_name = http_method.lower()
-                    setattr(self, method_name, func)
-                super(FunctionView, self).__init__()
-        return FunctionView
-    return wrapper
+
+
+

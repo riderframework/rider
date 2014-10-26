@@ -3,7 +3,7 @@ import json
 import falcon
 from tests.utils import request_factory, text_data_factory, json_data_factory
 
-from rider.views import DataView, StreamView, TextView, HtmlView, JsonView, view
+from rider.views import DataView, StreamView, TextView, HtmlView, JsonView, ViewSet
 from rider.http import Http404, HttpRedirect, HttpPermanentRedirect
 
 
@@ -16,11 +16,11 @@ def get_text_views(text_data):
         def get(self, request):
             raise Http404(text_data)
 
-    @view(TextView)
+    @TextView
     def test_text_view(request):
         return text_data
 
-    @view(TextView)
+    @TextView
     def test_text_view_404(request):
         raise Http404(text_data)
 
@@ -36,11 +36,11 @@ def get_html_views(html_data):
         def get(self, request):
             raise Http404(html_data)
 
-    @view(HtmlView)
+    @HtmlView
     def test_html_view(request):
         return html_data
 
-    @view(HtmlView)
+    @HtmlView
     def test_html_view_404(request):
         raise Http404(html_data)
 
@@ -57,11 +57,11 @@ def get_json_views(json_data):
         def get(self, request):
             return json_data
 
-    @view(JsonView)
+    @JsonView
     def test_json_view(request):
         return json_data
 
-    @view(JsonView)
+    @JsonView
     def test_json_view_404(request):
         raise Http404(json_data)
 
@@ -76,11 +76,11 @@ def get_json_views(json_data):
         #def get(self, request):
             #return json_data
 
-    #@view(JsonView)
+    #@JsonView
     #def test_stream_view(request):
         #return json_data
 
-    #@view(JsonView)
+    #@JsonView
     #def test_stream_view_404(request):
         #raise Http404(json_data)
 
@@ -100,6 +100,25 @@ def get_redirect_views(location):
                 raise HttpPermanentRedirect(location)
         yield TestPermanentRedirectView, falcon.HTTP_301
 
+
+def get_viewsets(text_data, html_data, json_data):
+    class TestViewSet(ViewSet):
+        @route('a')
+        @TextView
+        def text(self, request):
+            return text_data
+
+        @route('b')
+        @HtmlView
+        def html(self, request):
+            return html_data
+
+        @route('c')
+        @JsonView
+        def json(self, request):
+            return json_data
+
+    return TestViewSet
 
 
 class TestViews(TestCase):
@@ -142,4 +161,5 @@ class TestViews(TestCase):
 
             self.assertEqual(location, response.location)
             self.assertEqual(response.status, status)
+
 
