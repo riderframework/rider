@@ -8,6 +8,7 @@ from rider.views.decorators import ViewDecorator
 from rider.views.exceptions import HttpException
 from rider.views.response import ResponseSetter
 
+
 __all__ = ('DataView', 'StreamView', 'TextView', 'HtmlView', 'JsonView', 'ViewSet')
 
 

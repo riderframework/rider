@@ -1,8 +1,10 @@
 BASE_DIR = ''
 BASE_URL = ''
 
+
 class ConfigurationError(Exception):
     pass
+
 
 def configure(source, target=''):
     '''
