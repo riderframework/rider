@@ -17,13 +17,8 @@ except ImportError:
 '''
 load routes or views
 '''
-try:
-    import routes
-except ImportError:
-    try:
-        import views
-    except ImportError:
-        raise ImportError('Cannot import routes or views.')
+import routes
+
 
 '''
 import WSGI object application
