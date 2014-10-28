@@ -36,13 +36,14 @@ if CYTHON:
     ext_modules = [
         Extension('rider.routes.urls', [path.join('rider/routes/', 'urls.py')]),
         Extension('rider.routes.__init__', [path.join('rider/routes/', '__init__.py')]),
+        Extension('rider.http.server', [path.join('rider/http/', 'server.py')]),
+        Extension('rider.http.__init__', [path.join('rider/http/', '__init__.py')]),
         Extension('rider.views.response', [path.join('rider/views/', 'response.py')]),
         Extension('rider.views.decorators', [path.join('rider/views/', 'decorators.py')]),
         Extension('rider.views.exceptions', [path.join('rider/views/', 'exceptions.py')]),
         Extension('rider.views.__init__', [path.join('rider/views/', '__init__.py')]),
         Extension('rider.templates', [path.join('rider', 'templates.py')]),
         Extension('rider.core', [path.join('rider', 'core.py')]),
-        Extension('rider.http', [path.join('rider', 'http.py')]),
     ]
 else:
     cmdclass = {}

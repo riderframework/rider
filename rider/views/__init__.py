@@ -2,7 +2,7 @@ import json
 
 from functools import wraps
 
-from rider.core import HTTP_METHODS
+from rider.http import HTTP_METHODS
 
 from rider.views.decorators import ViewDecorator
 from rider.views.exceptions import HttpException

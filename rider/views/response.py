@@ -1,4 +1,4 @@
-from rider.core import HTTP_200
+from rider.http import HTTP_200
 
 
 class ResponseSetter(object):

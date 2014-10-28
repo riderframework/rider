@@ -71,7 +71,7 @@ def run(out, args):
             chdir(args[0])
         sys.path.append(getcwd())
         __import__('__init__')
-    from rider.utils import server
+    from rider.http import server
     server.run()
 
 

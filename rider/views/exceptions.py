@@ -1,4 +1,4 @@
-from rider.core import HTTP_404, HTTP_302, HTTP_301
+from rider.http import HTTP_404, HTTP_302, HTTP_301
 from rider.views.response import ResponseSetter
 
 class HttpException(ResponseSetter, Exception):

@@ -1,5 +1,6 @@
 from wsgiref.simple_server import make_server
-from rider import application
+from rider.http import application
+
 
 def run(host='localhost', port=8080):
     try:

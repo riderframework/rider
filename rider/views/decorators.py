@@ -1,7 +1,7 @@
 from types import FunctionType
 from functools import wraps, partial
 
-from rider.core import HTTP_METHODS
+from rider.http import HTTP_METHODS
 
 
 class ViewDecorator(object):

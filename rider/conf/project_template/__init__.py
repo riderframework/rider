@@ -18,9 +18,3 @@ except ImportError:
 load routes or views
 '''
 import routes
-
-
-'''
-import WSGI object application
-'''
-from rider import application

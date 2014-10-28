@@ -4,7 +4,7 @@ import falcon
 from tests.utils import request_factory, text_data_factory, json_data_factory
 
 from rider.views import DataView, StreamView, TextView, HtmlView, JsonView, ViewSet
-from rider.http import Http404, HttpRedirect, HttpPermanentRedirect
+from rider.views.exceptions import Http404, HttpRedirect, HttpPermanentRedirect
 
 
 def get_text_views(text_data):

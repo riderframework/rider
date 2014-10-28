@@ -1,4 +1,4 @@
-from rider.core import application
+from rider.http import application
 from rider import conf
 
 
