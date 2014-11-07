@@ -1,7 +1,8 @@
 '''
 Route lib
 '''
-from rider.utils import import_module, import_object
+from importlib import import_module
+from rider.utils import import_object
 from rider.routes.urls import push_url, nest_url, pop_url, url
 
 

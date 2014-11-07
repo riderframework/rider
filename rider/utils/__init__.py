@@ -1,7 +1,4 @@
 
-def import_module(module):
-    return __import__(module, globals(), locals(), [], 0)
-
 
 def import_object(dot_path):
     dot_path_split = dot_path.split('.')

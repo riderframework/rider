@@ -1,4 +1,4 @@
-from rider.http import application
+from rider.wsgi import application
 from rider import conf
 
 

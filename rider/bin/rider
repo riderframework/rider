@@ -2,7 +2,7 @@
 
 
 if __name__ == "__main__":
-    from rider.utils.commands import main
+    from rider.core.commands import main
     main(True)
 
 

@@ -1,5 +1,5 @@
 import __init__
-from rider.utils.commands import main
+from rider.core.commands import main
 
 
 main()
