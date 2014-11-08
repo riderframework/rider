@@ -4,7 +4,7 @@ manages all servers
 from multiprocessing import Process
 
 from rider.tasks.server import TaskServer
-from rider.wsgi.server import GunicornWsgiServer
+from rider.wsgi.server import GunicornWsgiServer, SimpleWsgiServer
 
 #class RegisterServer(type):
     #servers = []

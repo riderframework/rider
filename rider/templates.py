@@ -9,7 +9,11 @@ environment = Environment(
 )
 environment.globals['url'] = url
 
+TEMPLATE_CACHE = {}
 
-def render(template, context):
-    template = environment.get_or_select_template(template)
+def render(template_name, context={}):
+    if template_name in TEMPLATE_CACHE:
+        template = TEMPLATE_CACHE[template_name]
+    else:
+        template = TEMPLATE_CACHE.setdefault(template_name, environment.get_or_select_template(template_name))
     return template.render(context)

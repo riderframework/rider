@@ -8,4 +8,4 @@ class BaseWsgiServer(object):
         self.host = host
         self.port = port
         self.application = application
-        super(WsgiServer, self).__init__()
+        super(BaseWsgiServer, self).__init__()
