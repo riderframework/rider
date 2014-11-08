@@ -11,6 +11,7 @@ class GunicornWsgiServer(BaseWsgiServer, BaseApplication):
     def load_config(self):
         self.cfg.set('bind', '%s:%s' % (self.host, self.port))
         self.cfg.set('workers', 2)
+        #self.cfg.set('logger_class', 'logging.Logger')
 
     def load(self):
         return self.application
