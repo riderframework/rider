@@ -7,19 +7,20 @@ _NESTED_URLS = [conf.BASE_URL]
 _NESTED_NAMESPACES = []
 
 
-def push_url(url, namespace):
-    _NESTED_URLS.append(url)
-    if namespace:
-        _NESTED_NAMESPACES.append(namespace)
+class nest_urls(object):
+    def __enter__(self, url, namespace=''):
+        self.namespace = namespace
+        _NESTED_URLS.append(url)
+        if namespace:
+            _NESTED_NAMESPACES.append(namespace)
+
+    def __exit__(self, type, value, traceback):
+        del _NESTED_URLS[-1]
+        if self.namespace:
+            del _NESTED_NAMESPACES[-1]
 
 
-def pop_url(namespace):
-    del _NESTED_URLS[-1]
-    if namespace:
-        del _NESTED_NAMESPACES[-1]
-
-
-def nest_url(url, view, name):
+def add_url(url, view, name):
     url = '%s%s' % (
             ''.join(_NESTED_URLS),
             url
