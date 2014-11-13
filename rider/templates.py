@@ -11,6 +11,7 @@ environment.globals['url'] = url
 
 TEMPLATE_CACHE = {}
 
+
 def render(template_name, context={}):
     if template_name in TEMPLATE_CACHE:
         template = TEMPLATE_CACHE[template_name]
