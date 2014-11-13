@@ -13,8 +13,13 @@ Rider: Python Web Application Framework
 What is Rider?
 --------------
 
-Rider offers alternative to another web framework Django project (which is great, but fat and slow).
+Rider is full-stack Python Web Application Framework
 
 
+Install
+-------
 
+```
+$ pip install rider==0.1.4a
+```
 
