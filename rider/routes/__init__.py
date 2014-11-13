@@ -33,6 +33,9 @@ def route(url_pattern, view=None, name=''):
     Argument *view* may be instance of View class or string.
     If string is used it will be interpreted as module path pointing to View class.
 
+    :param url_pattern: Url or url pattern
+    :param view: View class
+    :param name: Name of the specified url
     For example:
         route('url_to', 'project.views.MyView')
 
@@ -59,4 +62,8 @@ def route(url_pattern, view=None, name=''):
 
 
 def url(name):
+    """
+    :param name: Name of url which has got by **route** function"
+    :return: Url
+    """
     return UrlNest.get_url(name)

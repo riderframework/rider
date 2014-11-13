@@ -46,9 +46,3 @@ class UrlNest(object):
             nested_url,
             view()
         )
-
-
-def add_url(url_pattern, view, name):
-    return UrlNest.add_url(url_pattern, view, name)
-
-
