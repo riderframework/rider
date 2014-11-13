@@ -2,44 +2,53 @@ from rider.wsgi import application
 from rider import conf
 
 
-_NAMED_URLS = {}
-_NESTED_URLS = [conf.BASE_URL]
-_NESTED_NAMESPACES = []
+class UrlNest(object):
 
+    __named_urls = {}
+    __nested_urls = [conf.BASE_URL]
+    __nested_namespaces = []
 
-class nest_urls(object):
-    def __enter__(self, url, namespace=''):
+    def __init__(self, url_pattern, namespace=''):
+        self.url_pattern = url_pattern
         self.namespace = namespace
-        _NESTED_URLS.append(url)
-        if namespace:
-            _NESTED_NAMESPACES.append(namespace)
+        super(UrlNest, self).__init__()
 
-    def __exit__(self, type, value, traceback):
-        del _NESTED_URLS[-1]
+    def __enter__(self):
+        self.__nested_urls.append(self.url_pattern)
         if self.namespace:
-            del _NESTED_NAMESPACES[-1]
+            self.__nested_namespaces.append(self.namespace)
 
+    def __exit__(self, *args):
+        del self.__nested_urls[-1]
+        if self.namespace:
+            del self.__nested_namespaces[-1]
 
-def add_url(url, view, name):
-    url = '%s%s' % (
-            ''.join(_NESTED_URLS),
-            url
+    @classmethod
+    def get_url(cls, name):
+        return cls.__named_urls[name]
+
+    @classmethod
+    def add_url(cls, url_pattern, view, name):
+        nested_url = '%s%s' % (
+            ''.join(cls.__nested_urls),
+            url_pattern
         )
 
-    if name:
-        if any(_NESTED_NAMESPACES):
-            name = '%s:%s' % (
-                ':'.join(_NESTED_NAMESPACES),
-                name
-            )
-        _NAMED_URLS[name] = url
+        if name:
+            if any(cls.__nested_namespaces):
+                name = '%s:%s' % (
+                    ':'.join(cls.__nested_namespaces),
+                    name
+                )
+            cls.__named_urls[name] = nested_url
 
-    application.add_route(
-        url,
-        view()
-    )
+        application.add_route(
+            nested_url,
+            view()
+        )
 
 
-def url(name):
-    return _NAMED_URLS[name]
+def add_url(url_pattern, view, name):
+    return UrlNest.add_url(url_pattern, view, name)
+
 
