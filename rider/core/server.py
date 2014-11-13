@@ -17,7 +17,7 @@ from rider.wsgi.server import GunicornWsgiServer, SimpleWsgiServer
 
 
 def run():
-    http_server = GunicornWsgiServer()
+    http_server = SimpleWsgiServer()
     http_worker = Process(target=http_server.run)
 
     task_server = TaskServer()
