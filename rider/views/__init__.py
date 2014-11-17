@@ -18,7 +18,6 @@ class TextView(ViewDecorator, ResponseSetter, UrlHolder):
     """
     same_exception_content = True
 
-
     def __init__(self, *args, **kwargs):
         super(TextView, self).__init__(*args, **kwargs)
         #support for viewset
@@ -81,22 +80,16 @@ class StreamView(TextView):
     same_exception_content = False
 
 
-
 class HtmlView(TextView):
-    '''
+    """
     text/html view
-    '''
+    """
     content_type = 'text/html'
 
 
 class JsonView(TextView):
-    '''
+    """
     application/json view
-    '''
+    """
     content_type = 'application/json'
     content_wrapper = json.dumps
-
-
-
-
-
