@@ -14,7 +14,7 @@ URL = info.URL
 VERSION = info.VERSION
 REQUIRES = ['falcon==0.1.9', 'jinja2']
 
-if sys.version_info.major < 3 and sys.version_info.minor < 7:
+if sys.version_info[0] < 3 and sys.version_info[1] < 7:
     REQUIRES.append('importlib')
 
 PYPY = True
