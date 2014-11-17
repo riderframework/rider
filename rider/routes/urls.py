@@ -8,13 +8,13 @@ class UrlNest(object):
     __nested_urls = [conf.BASE_URL]
     __nested_namespaces = []
 
-    def __init__(self, url_pattern, namespace=''):
-        self.url_pattern = url_pattern
+    def __init__(self, uri_template, namespace=''):
+        self.uri_template = uri_template
         self.namespace = namespace
         super(UrlNest, self).__init__()
 
     def __enter__(self):
-        self.__nested_urls.append(self.url_pattern)
+        self.__nested_urls.append(self.uri_template)
         if self.namespace:
             self.__nested_namespaces.append(self.namespace)
 
@@ -28,10 +28,10 @@ class UrlNest(object):
         return cls.__named_urls[name]
 
     @classmethod
-    def add_url(cls, url_pattern, view, name):
+    def add_url(cls, uri_template, view, name):
         nested_url = '%s%s' % (
             ''.join(cls.__nested_urls),
-            url_pattern
+            uri_template
         )
 
         if name:
@@ -46,3 +46,15 @@ class UrlNest(object):
             nested_url,
             view()
         )
+
+
+class UrlHolder(object):
+    __urls = {}
+
+    @classmethod
+    def get_urls(cls):
+        return cls.__urls.get(cls, [])
+
+    @classmethod
+    def add_url(cls, url, name):
+        cls.__urls.setdefault(cls, []).append((url, name))

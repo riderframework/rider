@@ -9,7 +9,7 @@ from rider.routes.urls import UrlNest
 __all__ = ('include_routes', 'route', 'url')
 
 
-def include_routes(url_pattern, viewset_or_module, namespace=''):
+def include_routes(uri_template, viewset_or_module, namespace=''):
     """
     nests urls from viewset or module *viewset_or_module* into *namespace*.
     Nested urls can be linked with 'namespace:nested_url' (it can be used in function **url**).
@@ -17,7 +17,7 @@ def include_routes(url_pattern, viewset_or_module, namespace=''):
     For example:
         include_routes('/contact/', 'project.contact.routes', namespace='contact')
     """
-    with UrlNest(url_pattern, namespace):
+    with UrlNest(uri_template, namespace):
         try:
             viewset = import_object(viewset_or_module)
         except AttributeError:
@@ -27,13 +27,13 @@ def include_routes(url_pattern, viewset_or_module, namespace=''):
                 route('', subview)
 
 
-def route(url_pattern, view=None, name=''):
+def route(uri_template, view=None, name=''):
     """
     routes *url* direct to *view* and names it with *name*.
     Argument *view* may be instance of View class or string.
     If string is used it will be interpreted as module path pointing to View class.
 
-    :param url_pattern: Url or url pattern
+    :param uri_template: Url or url pattern
     :param view: View class
     :param name: Name of the specified url
     For example:
@@ -47,15 +47,15 @@ def route(url_pattern, view=None, name=''):
     if not view:
         #decorator wrapper
         def route_wrapper(cls):
-            cls.add_url(url_pattern, name)
+            cls.add_url(uri_template, name)
             return cls
         return route_wrapper
 
     if isinstance(view, str):  # TODO or unicode?
         view = import_object(view)
 
-    if url_pattern:
-        UrlNest.add_url(url_pattern, view, name)
+    if uri_template:
+        UrlNest.add_url(uri_template, view, name)
     for cls_url, cls_url_name in view.get_urls():
         if cls_url:
             UrlNest.add_url(cls_url, view, cls_url_name)

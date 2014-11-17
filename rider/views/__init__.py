@@ -7,28 +7,22 @@ from rider.http import HTTP_METHODS
 from rider.views.decorators import ViewDecorator
 from rider.views.exceptions import HttpException
 from rider.views.response import ResponseSetter
-
+from rider.routes.urls import UrlHolder
 
 __all__ = ('DataView', 'StreamView', 'TextView', 'HtmlView', 'JsonView', 'ViewSet')
 
 
-class View(ViewDecorator, ResponseSetter):
-    '''
+class TextView(ViewDecorator, ResponseSetter, UrlHolder):
+    """
     Wrapper around falcon view api
-    '''
+    """
     same_exception_content = True
-    urls = {}
 
-    @classmethod
-    def get_urls(cls):
-        return cls.urls.get(cls, [])
-
-    @classmethod
-    def add_url(cls, url, name):
-        cls.urls.setdefault(cls, []).append((url, name))
 
     def __init__(self, *args, **kwargs):
-        super(View, self).__init__(*args, **kwargs)
+        super(TextView, self).__init__(*args, **kwargs)
+        #support for viewset
+        self.viewset = None
         for http_method in HTTP_METHODS:
             method_name = http_method.lower()
             try:
@@ -63,7 +57,8 @@ class ViewSet(object):
             attr = getattr(self, attr_name)
             if callable(attr):
                 try:
-                    if issubclass(attr, View):
+                    if issubclass(attr, TextView):
+                        #set "viewset" attribut of View instance
                         attr.viewset = self
                         yield attr
                 except TypeError:
@@ -71,26 +66,20 @@ class ViewSet(object):
                     continue
 
 
-class DataView(View):
-    '''
+class DataView(TextView):
+    """
     Basic binary data view
-    '''
+    """
     response_type = 'data'
 
 
-class StreamView(View):
-    '''
+class StreamView(TextView):
+    """
     Basic stream view
-    '''
+    """
     response_type = 'stream'
     same_exception_content = False
 
-
-class TextView(View):
-    '''
-    Basic text view
-    '''
-    response_type = 'body'
 
 
 class HtmlView(TextView):
