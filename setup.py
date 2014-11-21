@@ -12,7 +12,7 @@ AUTHOR = info.AUTHOR
 AUTHOR_EMAIL = info.AUTHOR_EMAIL
 URL = info.URL
 VERSION = info.VERSION
-REQUIRES = ['falcon==0.1.9', 'jinja2']
+REQUIRES = ['falcon', 'jinja2']
 
 if sys.version_info[0] < 3 and sys.version_info[1] < 7:
     REQUIRES.append('importlib')

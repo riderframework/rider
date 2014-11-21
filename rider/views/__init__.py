@@ -4,10 +4,13 @@ from functools import wraps
 
 from rider.http import HTTP_METHODS
 
+from rider.routes.urls import UrlHolder
+
 from rider.views.decorators import ViewDecorator
 from rider.views.exceptions import HttpException
 from rider.views.response import ResponseSetter
-from rider.routes.urls import UrlHolder
+from rider.wsgi.request import Request
+
 
 __all__ = ('DataView', 'StreamView', 'TextView', 'HtmlView', 'JsonView', 'ViewSet')
 
@@ -39,7 +42,7 @@ class TextView(ViewDecorator, ResponseSetter, UrlHolder):
         @wraps(method)
         def wrapper(request, response, *args, **kwargs):
             try:
-                self.content = method(request, *args, **kwargs)
+                self.content = method(Request(request), *args, **kwargs)
             except HttpException as e:
                 if self.same_exception_content:
                     e.content_type = self.content_type

@@ -9,9 +9,9 @@ class ConfigurationError(Exception):
 
 
 def configure(source, target=''):
-    '''
+    """
     configure
-    '''
+    """
     from types import ModuleType
     if isinstance(source, dict):
         source_iterator = source.iteritems()
