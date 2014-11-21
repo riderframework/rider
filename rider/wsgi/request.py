@@ -1,18 +1,17 @@
-from urlparse import parse_qs
+from falcon.request import Request as FalconRequest
 
 
-class Request(object):
-    def __init__(self, request):
-        self.__request = request
-
+class Request(FalconRequest):
     def __getattr__(self, name):
         if name == 'DATA':
             self.DATA = self.__data()
             return self.DATA
-        return getattr(self.__request, name)
 
     def __data(self):
+        print self.__request.content_length
         if self.__request.content_length:
-            return parse_qs(self.__request.stream.read(self.__request.content_length))
+            a = self.__request.stream.read(self.__request.content_length)
+            print a
+            return parse_qs(a)
         else:
             return {}
