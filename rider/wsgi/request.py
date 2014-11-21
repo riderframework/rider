@@ -6,9 +6,13 @@ class Request(object):
         self.__request = request
 
     def __getattr__(self, name):
+        if name == 'DATA':
+            self.DATA = self.__data()
+            return self.DATA
         return getattr(self.__request, name)
 
-    @property
-    def DATA(self):
-        self.DATA = parse_qs(self.__request.stream.read(self.__request.content_length))
-        return self.DATA
+    def __data(self):
+        if self.__request.content_length:
+            return parse_qs(self.__request.stream.read(self.__request.content_length))
+        else:
+            return {}
