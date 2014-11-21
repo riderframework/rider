@@ -51,32 +51,48 @@ def create(out, args):
     if not app:
         copytree(path.join(path.dirname(__file__), '..', 'conf/project_template'), project)
     else:
-        createapp([app])
+        copytree(path.join(path.dirname(__file__), '..', 'conf/app_template'), path.join(project, app))
 
 
-def createapp(out, args):
-    if len(args) != 1 or '.' in args[0]:
-        print('TODO')
-        return
-    print('TODO creating app %s' % args[0])
+def debug(out, args):
+    # if len(args) == 2:
+    #     test_file = args[1]
+    #     args = args[1:]
+    # else:
+    #     test_file = None
+    try:
+        from coverage import coverage
+        cov = coverage()
+        cov.start()
+    except ImportError:
+        coverage = None
+
+    run(out, args, debug=True)
+
+    if coverage:
+        cov.stop()
 
 
-
-def run(out, args):
+def run(out, args, debug=False):
     '''
     starts develop server
     '''
+    load_project(out, args)
+    from rider.core import server
+    server.run(debug=debug)
+
+
+def load_project(out, args):
     if out:
         if args:
             chdir(args[0])
         sys.path.append(getcwd())
         __import__('__init__')
-    from rider.core import server
-    server.run()
 
 
 COMMANDS = {
     'help': get_help,
     'create': create,
-    'run': run
+    'run': run,
+    'debug': debug
 }

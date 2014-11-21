@@ -16,7 +16,7 @@ from rider.wsgi.server import GunicornWsgiServer, SimpleWsgiServer
         #print cls.servers
 
 
-def run():
+def run(debug=False):
     http_server = SimpleWsgiServer()
     http_worker = Process(target=http_server.run)
 
@@ -25,3 +25,8 @@ def run():
 
     http_worker.start()
     task_worker.start()
+
+    if debug:
+        debug_server = DebugServer()
+        debug_worker = Process(target=debug_server.run)
+        debug_worker.start()
