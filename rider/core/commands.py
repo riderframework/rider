@@ -1,6 +1,7 @@
-from os import path, chdir, getcwd
+from os import path
 import sys
 from shutil import copytree
+from utils import load_project
 
 
 def main(out=False):
@@ -14,9 +15,9 @@ def main(out=False):
 
 
 def get_help(out, args=[]):
-    '''
+    """
     shows help about command
-    '''
+    """
     if any(args):
         command = args[0]
         if command in COMMANDS:
@@ -30,9 +31,9 @@ def get_help(out, args=[]):
 
 
 def create(out, args):
-    '''
+    """
     creates project or app
-    '''
+    """
 
     project_app = args[0].split('.')
 
@@ -54,45 +55,30 @@ def create(out, args):
         copytree(path.join(path.dirname(__file__), '..', 'conf/app_template'), path.join(project, app))
 
 
-def debug(out, args):
-    # if len(args) == 2:
-    #     test_file = args[1]
-    #     args = args[1:]
-    # else:
-    #     test_file = None
+def run(out, args):
+    """
+    starts server
+    """
     try:
-        from coverage import coverage
-        cov = coverage()
-        cov.start()
-    except ImportError:
-        coverage = None
+        args.remove('debug')
+    except ValueError:
+        debug = False
+    else:
+        debug = True
 
-    run(out, args, debug=True)
+    if out:
+        try:
+            cd = args[0]
+        except IndexError:
+            cd = ''
+        load_project(cd)
 
-    if coverage:
-        cov.stop()
-
-
-def run(out, args, debug=False):
-    '''
-    starts develop server
-    '''
-    load_project(out, args)
     from rider.core import server
     server.run(debug=debug)
-
-
-def load_project(out, args):
-    if out:
-        if args:
-            chdir(args[0])
-        sys.path.append(getcwd())
-        __import__('__init__')
 
 
 COMMANDS = {
     'help': get_help,
     'create': create,
-    'run': run,
-    'debug': debug
+    'run': run
 }
