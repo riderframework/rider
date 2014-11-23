@@ -2,35 +2,41 @@
 manages all servers
 """
 from multiprocessing import Process
-
-'''
-TODO vyresit registraci
-'''
-from rider.tasks.server import TaskServer
-from rider.wsgi.server import GunicornWsgiServer, SimpleWsgiServer
-from rider.debug.server import DebugServer
-
-#class RegisterServer(type):
-    #servers = []
-    #def __new__(mcls, name, bases, attrs):
-        #mcls.servers.append(name):
-        #return type.__new__(mcls, name, bases, attrs)
-
-    #def run(cls)
-        #print cls.servers
+from rider.conf import SERVERS
+from rider.utils import import_object
+import signal
+import sys
 
 
-def run(debug=False):
-    http_server = SimpleWsgiServer()
-    http_worker = Process(target=http_server.run, name='WsgiServer')
+class Server(object):
+    servers = []
 
-    task_server = TaskServer()
-    task_worker = Process(target=task_server.run, name='TaskServer')
+    @classmethod
+    def stop(cls, signum, frame):
+        for server, worker in cls.servers:
+            server.stop()
 
-    http_worker.start()
-    task_worker.start()
+        sys.exit(0)
 
-    if debug:
-        debug_server = DebugServer()
-        debug_worker = Process(target=debug_server.run, name='DebugServer')
-        debug_worker.start()
+    @classmethod
+    def quit(cls, signum, frame):
+        print 'signum quit', signum
+
+        for server, worker in cls.servers:
+            worker.terminate()
+
+        sys.exit(0)
+
+    @classmethod
+    def run(cls):
+        for server_cls_module_path in SERVERS:
+            server_cls = import_object(server_cls_module_path)
+
+            server = server_cls()
+            worker = Process(target=server.start, name=server_cls_module_path)
+            worker.start()
+            cls.servers.append((server, worker))
+
+        signal.signal(signal.SIGINT, cls.stop)
+        signal.signal(signal.SIGTERM, cls.stop)
+        signal.signal(signal.SIGQUIT, cls.quit)

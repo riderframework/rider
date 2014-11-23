@@ -28,7 +28,6 @@ class ResponseSetter(object):
             self.location = self.__class__.location
 
         if self.content is not None:
-            print self.content
             setattr(
                 response, self.response_type,
                 self.content if self.content_wrapper is None else self.content_wrapper.__func__(self.content)

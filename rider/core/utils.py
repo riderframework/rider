@@ -1,6 +1,7 @@
 import sys
 from os import chdir, getcwd
 
+
 def load_project(cd=''):
     if cd:
         chdir(cd)

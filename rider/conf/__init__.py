@@ -2,6 +2,10 @@ import templates
 
 BASE_DIR = ''
 BASE_URL = ''
+SERVERS = (
+    'rider.wsgi.server.WsgiServer',
+    'rider.tasks.server.TaskServer',
+)
 
 
 class ConfigurationError(Exception):

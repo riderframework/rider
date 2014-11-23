@@ -59,12 +59,6 @@ def run(out, args):
     """
     starts server
     """
-    try:
-        args.remove('debug')
-    except ValueError:
-        debug = False
-    else:
-        debug = True
 
     if out:
         try:
@@ -73,8 +67,8 @@ def run(out, args):
             cd = ''
         load_project(cd)
 
-    from rider.core import server
-    server.run(debug=debug)
+    from rider.core.server import Server
+    Server.run()
 
 
 COMMANDS = {

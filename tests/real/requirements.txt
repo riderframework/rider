@@ -1,3 +1,4 @@
 testtools
-pytest-cov
+coverage
+pytest
 requests

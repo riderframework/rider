@@ -72,6 +72,7 @@ class DataView(TextView):
     Basic binary data view
     """
     response_type = 'data'
+    encoding = None
 
 
 class StreamView(TextView):
@@ -80,6 +81,7 @@ class StreamView(TextView):
     """
     response_type = 'stream'
     same_exception_content = False
+    encoding = None
 
 
 class HtmlView(TextView):
