@@ -14,14 +14,12 @@ class Server(object):
     @classmethod
     def stop(cls, signum, frame):
         for server, worker in cls.servers:
-            server.stop()
+            server.stop(timeout=1000)
 
         sys.exit(0)
 
     @classmethod
     def quit(cls, signum, frame):
-        print 'signum quit', signum
-
         for server, worker in cls.servers:
             worker.terminate()
 

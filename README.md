@@ -5,7 +5,7 @@ Full-stack Python Web Application Framework
 - powered by:
   - Falcon (http://falconframework.org/)
   - Jinja2 (http://jinja.pocoo.org/)
-  - Gunicorn (http://gunicorn.org/)
+  - gevent (http://gevent.org/)
   - SQLAlchemy
   - WTForms
   - Celery (http://www.celeryproject.org/)
