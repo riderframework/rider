@@ -6,11 +6,8 @@ rider create project
 
 #copy test project files into
 cp -R template/* project/
-cp -R tests.py project/
+cp -R tests.py project/test_data.py
 
-rider run project &
+rider run project
 
-py.test tests.py
-
-kill -9 `ps -Af | grep "rider run project" | grep -v 'grep' | awk '{print $2}'`
 rm -rf project

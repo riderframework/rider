@@ -1,6 +1,6 @@
 from os import path
 import sys
-from shutil import copytree
+from shutil import copytree, ignore_patterns
 from utils import load_project
 
 
@@ -49,10 +49,12 @@ def create(out, args):
     except IndexError:
         app = None
 
+    ignore = ignore_patterns('*.pyo', '*.pyc', '*.py.class')
+
     if not app:
-        copytree(path.join(path.dirname(__file__), '..', 'conf/project_template'), project)
+        copytree(path.join(path.dirname(__file__), '..', 'conf/project_template'), project, ignore=ignore)
     else:
-        copytree(path.join(path.dirname(__file__), '..', 'conf/app_template'), path.join(project, app))
+        copytree(path.join(path.dirname(__file__), '..', 'conf/app_template'), path.join(project, app), ignore=ignore)
 
 
 def run(out, args):

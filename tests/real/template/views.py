@@ -3,8 +3,9 @@
 from rider.views import TextView, HtmlView, JsonView, ViewSet
 from rider.http import Http404, HttpRedirect
 from rider.routes import route, url
+from rider.templates import render
 
-from tests import LONG_TEXT, short_text
+from test_data import LONG_TEXT, short_text
 
 
 class TestTextIndexView(TextView):

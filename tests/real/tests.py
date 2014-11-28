@@ -18,10 +18,8 @@ from testtools import TestCase
 
 class TestViews(TestCase):
     def _url(self, path='/'):
-        return 'http://localhost:8080%s' % path
+        return 'http://localhost:8000%s' % path
 
-#route('/404html', 'views.Test404HtmlView', name='404html')
-#route('/404text', 'views.Test404TextView')
 #route('/json', 'views.TestJsonView')
 #route('/redir', 'views.TestRedirectView')
 #route('/func', 'views.test_func')
@@ -60,3 +58,14 @@ class TestViews(TestCase):
         r = requests.get(self._url('/404text'))
         self._test_basic(r, 'text/plain', status_code=404)
         self.assertEqual(r.text, short_text('Test404TextView'))
+
+    def _test_json(self, url):
+        r = requests.get(self._url(url))
+        self._test_basic(r, 'application/json')
+        self.assertEqual(r.json(), {'a': 'b', 'c': [1, short_text('TestJsonView')]})
+
+    def test_json(self):
+        self._test_json('/json')
+
+    def test_json2_route(self):
+        self._test_json('/json2')
