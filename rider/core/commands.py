@@ -69,8 +69,8 @@ def run(out, args):
             cd = ''
         load_project(cd)
 
-    from rider.core.server import Server
-    Server.run()
+    from rider.core.server import main_server
+    main_server.start()
 
 
 COMMANDS = {

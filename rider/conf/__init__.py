@@ -2,6 +2,8 @@ import templates
 
 BASE_DIR = ''
 BASE_URL = ''
+
+MAIN_SERVER = 'rider.core.server.MainServer'
 SERVERS = (
     'rider.wsgi.server.WsgiServer',
     'rider.tasks.server.TaskServer',

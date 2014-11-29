@@ -1,7 +1,8 @@
 import time
+from rider.core.server import BaseServer
 
 
-class TaskServer(object):
+class TaskServer(BaseServer):
     """
     TODO
     """
@@ -17,7 +18,8 @@ class TaskServer(object):
             time.sleep(0.01)
         self._stopped = True
 
-    def stop(self, timeout=0.2):
+    def stop(self):
+        timeout = 0.2
         self._stop = True
         time_start = time.time()
         while not self._stopped and time.time() - time_start < timeout:
