@@ -20,11 +20,6 @@ class TestViews(TestCase):
     def _url(self, path='/'):
         return 'http://localhost:8000%s' % path
 
-#route('/json', 'views.TestJsonView')
-#route('/redir', 'views.TestRedirectView')
-#route('/func', 'views.test_func')
-#route('/func2', test_func2)
-#route('', test_func3)
 #include_routes('/include/', 'app.routes', namespace='include')
 #include_routes('/viewset/', 'views.TestViewSet', namespace='viewset')
 #route('/post', 'views.test_post')
@@ -69,3 +64,33 @@ class TestViews(TestCase):
 
     def test_json2_route(self):
         self._test_json('/json2')
+
+    def test_redirect(self):
+        r = requests.get(self._url('/redir'))
+        self._test_basic(r, 'text/plain')
+        self.assertEqual(r.text, 'INDEX')
+
+    def test_html_func(self):
+        r = requests.get(self._url('/html_func/'))
+        self._test_basic(r, 'text/html')
+        self.assertEqual(r.text, short_text('test_html_func'))
+
+    def test_text_func(self):
+        r = requests.get(self._url('/text_func'))
+        self._test_basic(r, 'text/plain')
+        self.assertEqual(r.text, short_text('test_text_func'))
+
+    def test_text_func_b(self):
+        r = requests.get(self._url('/text_func_b'))
+        self._test_basic(r, 'text/plain')
+        self.assertEqual(r.text, short_text('test_text_func'))
+
+    def test_text_func2(self):
+        r = requests.get(self._url('/text_func2'))
+        self._test_basic(r, 'text/plain')
+        self.assertEqual(r.text, short_text('test_text_func2'))
+
+    def test_include_deep_render_get_post(self):
+        r = requests.get(self._url('/include/deep_render_get_post/'))
+        self._test_basic(r, 'text/html')
+        self.assertEqual(r.text, 'TEMPLATE\n\n<br />\n/viewset/view_func_html_post/')

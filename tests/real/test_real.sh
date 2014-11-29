@@ -8,6 +8,8 @@ rider create project
 cp -R template/* project/
 cp -R tests.py project/test_data.py
 
+rm .coverage
 rider run project
-
+coverage combine
+coverage report
 rm -rf project

@@ -49,16 +49,16 @@ def test_html_func(request):
     return short_text('test_html_func')
 
 
-@route('/func2.2/')
+@route('/text_func_b/')
 @TextView('POST', 'GET')
+def test_text_func(request):
+    return short_text('test_text_func')
+
+
+@route('/text_func2/')
+@TextView
 def test_text_func2(request):
     return short_text('test_text_func2')
-
-
-@route('/func2.2/')
-@TextView
-def test_text_func3(request):
-    return short_text('test_text_func3')
 
 
 class TestViewSet(ViewSet):
