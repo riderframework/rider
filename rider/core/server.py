@@ -2,8 +2,8 @@
 manages all servers
 """
 from multiprocessing import Process
-from rider.conf import MAIN_SERVER, SERVERS
 from rider.utils import import_object
+
 import os
 import signal
 import sys
@@ -13,7 +13,7 @@ class BaseServer(object):
     def __stop(self, signum, frame):
         self.stop()
 
-    def __quit(self, signu, frame):
+    def __quit(self, signum, frame):
         self.quit()
 
     def stop(self):
@@ -29,27 +29,28 @@ class BaseServer(object):
         super(BaseServer, self).__init__(*args, **kwargs)
 
 
-class MainServer(BaseServer):
-    servers = []
+class MultiServer(BaseServer):
+    def __init__(self, servers):
+        self.servers = {}
+        for server_cls, args, kwargs in servers:
+            if not isinstance(server_cls, BaseServer):
+                server_cls = import_object(server_cls)
+            server = server_cls(*args, **kwargs)
+            self.servers[server] = None
+        super(MultiServer, self).__init__()
 
     def stop(self):
-        for server, process in self.servers:
-            os.kill(process.pid, signal.SIGTERM)
+        for server, process in self.servers.iteritems():
+            if process:
+                os.kill(process.pid, signal.SIGTERM)
 
     def quit(self):
-        for server, process in self.servers:
+        for server, process in self.servers.iteritems():
             process.terminate()
         sys.exit(0)
 
     def start(self):
-        for server_cls_module_path in SERVERS:
-            server_cls = import_object(server_cls_module_path)
-            server = server_cls()
-            process = Process(target=server.start, name=server_cls_module_path)
+        for server in self.servers:
+            process = Process(target=server.start)
             process.start()
-
-            self.servers.append((server, process))
-
-
-main_server_cls = import_object(MAIN_SERVER)
-main_server = main_server_cls()
+            self.servers[server] = process

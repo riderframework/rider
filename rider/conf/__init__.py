@@ -3,10 +3,13 @@ import templates
 BASE_DIR = ''
 BASE_URL = ''
 
-MAIN_SERVER = 'rider.core.server.MainServer'
 SERVERS = (
-    'rider.wsgi.server.WsgiServer',
-    'rider.tasks.server.TaskServer',
+    # ('rider.wsgi.server.MultiCoreWsgiServer', [], {
+    #     'number': 2,
+    #     'worker_class': 'rider.wsgi.server.WsgiServer'
+    # }),
+    ('rider.wsgi.server.WsgiServer', [], {}),
+    ('rider.tasks.server.TaskServer', [], {}),
 )
 
 

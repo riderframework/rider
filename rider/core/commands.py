@@ -2,6 +2,7 @@ from os import path
 import sys
 from shutil import copytree, ignore_patterns
 from utils import load_project
+from rider.utils import import_object
 
 
 def main(out=False):
@@ -69,8 +70,22 @@ def run(out, args):
             cd = ''
         load_project(cd)
 
-    from rider.core.server import main_server
-    main_server.start()
+    from rider.conf import SERVERS
+    if any(SERVERS):
+        if len(SERVERS) == 1:
+            server_cls = import_object(SERVERS[0][0])
+            args = SERVERS[0][1]
+            kwargs = SERVERS[0][2]
+        else:
+            from rider.core.server import MultiServer
+            server_cls = MultiServer
+            args = [SERVERS]
+            kwargs = {}
+        server = server_cls(*args, **kwargs)
+        server.start()
+    else:
+        #TODO nicer exception
+        raise Exception('There is no server definition in conf.SERVERS')
 
 
 COMMANDS = {
