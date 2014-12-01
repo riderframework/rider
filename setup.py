@@ -36,18 +36,27 @@ if not PYPY:
 
 if CYTHON:
     cmdclass = {'build_ext': build_ext}
+
+    def cython_extension(module_path):
+        return Extension(module_path, ['%s.py' % module_path.replace('.', '/')])
+
     ext_modules = [
-        Extension('rider.routes.urls', [path.join('rider/routes/', 'urls.py')]),
-        Extension('rider.routes.__init__', [path.join('rider/routes/', '__init__.py')]),
+        cython_extension('rider.core.server'),
 
-        Extension('rider.views.response', [path.join('rider/views/', 'response.py')]),
-        Extension('rider.views.decorators', [path.join('rider/views/', 'decorators.py')]),
-        Extension('rider.views.exceptions', [path.join('rider/views/', 'exceptions.py')]),
-        Extension('rider.views.__init__', [path.join('rider/views/', '__init__.py')]),
+        cython_extension('rider.routes.urls'),
+        cython_extension('rider.routes.__init__'),
 
-        Extension('rider.utils', [path.join('rider', 'utils.py')]),
-        Extension('rider.http', [path.join('rider', 'http.py')]),
-        Extension('rider.templates', [path.join('rider', 'templates.py')]),
+        cython_extension('rider.views.response'),
+        cython_extension('rider.views.decorators'),
+        cython_extension('rider.views.exceptions'),
+        cython_extension('rider.views.__init__'),
+
+        cython_extension('rider.wsgi.server'),
+        cython_extension('rider.wsgi.__init__'),
+
+        cython_extension('rider.utils'),
+        cython_extension('rider.http'),
+        cython_extension('rider.templates'),
     ]
 else:
     cmdclass = {}

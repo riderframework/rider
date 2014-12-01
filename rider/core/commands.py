@@ -1,7 +1,7 @@
 from os import path
 import sys
 from shutil import copytree, ignore_patterns
-from utils import load_project
+from rider.core.utils import load_project
 from rider.utils import import_object
 
 

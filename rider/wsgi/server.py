@@ -3,8 +3,6 @@ from gevent import pywsgi
 from gevent.server import _tcp_listener
 from rider.core.server import BaseServer, MultiServer
 
-from multiprocessing import Process
-
 
 class WsgiServer(BaseServer):
     def __init__(self, listener=('127.0.0.1', 8000)):
@@ -18,6 +16,7 @@ class WsgiServer(BaseServer):
     def start(self):
         self.server = pywsgi.WSGIServer(self.listener, application)
         self.server.serve_forever()
+        super(WsgiServer, self).start()
 
 
 class MultiCoreWsgiServer(MultiServer):

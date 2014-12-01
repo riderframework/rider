@@ -1,8 +1,12 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
+./clean.sh
+rm -f .coverage
+
+#real tests
 cd real
 ./test_real.sh
 
-cd syntetic
-./test_synthetic.sh
-
+#
+coverage combine
+coverage report

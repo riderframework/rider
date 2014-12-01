@@ -17,6 +17,7 @@ class TaskServer(BaseServer):
         while not self._stop:
             time.sleep(0.01)
         self._stopped = True
+        super(TaskServer, self).start()
 
     def stop(self):
         timeout = 0.2

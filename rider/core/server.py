@@ -19,14 +19,13 @@ class BaseServer(object):
     def stop(self):
         pass
 
-    def start(self):
+    def quit(self):
         pass
 
-    def __init__(self, *args, **kwargs):
+    def start(self):
         signal.signal(signal.SIGINT, self.__stop)
         signal.signal(signal.SIGTERM, self.__stop)
         signal.signal(signal.SIGQUIT, self.__quit)
-        super(BaseServer, self).__init__(*args, **kwargs)
 
 
 class MultiServer(BaseServer):
@@ -47,6 +46,7 @@ class MultiServer(BaseServer):
     def quit(self):
         for server, process in self.servers.iteritems():
             process.terminate()
+
         sys.exit(0)
 
     def start(self):
@@ -54,3 +54,5 @@ class MultiServer(BaseServer):
             process = Process(target=server.start)
             process.start()
             self.servers[server] = process
+
+        super(MultiServer, self).start()
