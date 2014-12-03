@@ -5,20 +5,28 @@ from rider.wsgi.server import WsgiServer
 
 
 class TestServer(MultiServer):
+    def stop(self):
+        self.cov.stop()
+        self.cov.save()
+        super(TestServer, self).stop()
+
     def start(self):
-        cov = coverage(data_file='../../.coverage.main.rider', config_file='../../.coveragerc')
-        cov.start()
+        self.cov = coverage(data_suffix=True, config_file='../../.coveragerc')
+        self.cov.start()
         super(TestServer, self).start()
+
+    def run(self):
         pytest.main('../tests.py')
-        cov.stop()
-        cov.save()
         self.stop()
 
 
 class TestWsgiServer(WsgiServer):
+    def stop(self):
+        self.cov.stop()
+        self.cov.save()
+        super(TestWsgiServer, self).stop()
+
     def start(self):
-        cov = coverage(data_file='../../.coverage.wsgi.rider', config_file='../../.coveragerc')
-        cov.start()
+        self.cov = coverage(data_suffix=True, config_file='../../.coveragerc')
+        self.cov.start()
         super(TestWsgiServer, self).start()
-        cov.stop()
-        cov.save()

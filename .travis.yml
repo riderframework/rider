@@ -3,12 +3,8 @@ install: pip install tox coveralls --use-mirrors
 env:
   - TOX_ENV=py26_real
   - TOX_ENV=py27_real
-  - TOX_ENV=py33_real
-  - TOX_ENV=py34_real
   - TOX_ENV=py26_cython_real
   - TOX_ENV=py27_cython_real
-  - TOX_ENV=py33_cython_real
-  - TOX_ENV=py34_cython_real
 script:
   - tox -e $TOX_ENV
 after_success: cd tests && coveralls

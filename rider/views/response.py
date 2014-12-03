@@ -11,7 +11,7 @@ class ResponseSetter(object):
 
     def __init__(self, *args, **kwargs):
         self.content = None
-        super(ResponseSetter, self).__init__(*args, **kwargs)
+        super(ResponseSetter, self).__init__()
 
     def set_response(self, response):
         response.status = self.status

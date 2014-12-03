@@ -1,4 +1,8 @@
 from rider import conf
+
+
+conf.MAIN_SERVER = 'server.TestServer'
+
 conf.SERVERS = (
-    ('server.TestServer', [[('server.TestWsgiServer', [], {})]], {}),
+    ('server.TestWsgiServer', [], {}),
 )

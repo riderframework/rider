@@ -9,4 +9,9 @@ cp -R template/* project/
 cp -R tests.py project/test_data.py
 
 rider run project
-rm -rf project
+#
+cd project
+coverage combine
+coverage report
+cd ..
+rm -rf real/project

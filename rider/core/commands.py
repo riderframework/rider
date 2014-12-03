@@ -70,18 +70,9 @@ def run(out, args):
             cd = ''
         load_project(cd)
 
-    from rider.conf import SERVERS
-    if any(SERVERS):
-        if len(SERVERS) == 1:
-            server_cls = import_object(SERVERS[0][0])
-            args = SERVERS[0][1]
-            kwargs = SERVERS[0][2]
-        else:
-            from rider.core.server import MultiServer
-            server_cls = MultiServer
-            args = [SERVERS]
-            kwargs = {}
-        server = server_cls(*args, **kwargs)
+    from rider import conf
+    if any(conf.SERVERS):
+        server = import_object(conf.MAIN_SERVER)(conf.SERVERS)
         server.start()
     else:
         #TODO nicer exception

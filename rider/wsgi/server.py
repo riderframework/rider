@@ -12,11 +12,14 @@ class WsgiServer(BaseServer):
 
     def stop(self):
         self.server.stop()
+        super(WsgiServer, self).stop()
 
     def start(self):
         self.server = pywsgi.WSGIServer(self.listener, application)
-        self.server.serve_forever()
         super(WsgiServer, self).start()
+
+    def run(self):
+        self.server.serve_forever()
 
 
 class MultiCoreWsgiServer(MultiServer):
