@@ -6,16 +6,16 @@ Full-stack Python Web Application Framework
   - Falcon (http://falconframework.org/)
   - Jinja2 (http://jinja.pocoo.org/)
   - gevent (http://gevent.org/)
+  - Celery (http://www.celeryproject.org/)
   - SQLAlchemy
   - WTForms
-  - Celery (http://www.celeryproject.org/)
 
 
 Install
 -------
 
 ```bash
-$ pip install rider==0.1.4a
+$ pip install rider==0.2.0a
 ```
 
 Development Cycle
