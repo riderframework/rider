@@ -16,7 +16,8 @@ __all__ = ('DataView', 'StreamView', 'TextView', 'HtmlView', 'JsonView', 'ViewSe
 
 class TextView(ViewDecorator, ResponseSetter, UrlHolder):
     """
-    Wrapper around falcon view api
+    Basic wrapper around falcon view api.
+    It provide support for plaint text output.
     """
     same_exception_content = True
 
@@ -53,6 +54,9 @@ class TextView(ViewDecorator, ResponseSetter, UrlHolder):
 
 
 class ViewSet(object):
+    """
+    Package of multiple views and theirs urls.
+    """
     def get_views(self):
         for attr_name in dir(self):
             attr = getattr(self, attr_name)

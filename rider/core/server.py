@@ -10,6 +10,10 @@ import sys
 
 
 class BaseServer(object):
+    """
+    Unificate signal handling and processing.
+    Define basic methods every server must implement.
+    """
     def __stop(self, signum, frame):
         self.stop()
 
@@ -33,6 +37,9 @@ class BaseServer(object):
 
 
 class MultiServer(BaseServer):
+    """
+    Server that can start another servers and control them via signals.
+    """
     def __init__(self, servers):
         self.servers = {}
         for server_cls, args, kwargs in servers:

@@ -5,6 +5,10 @@ from rider.core.server import BaseServer, MultiServer
 
 
 class WsgiServer(BaseServer):
+    """
+    Basic single threaded WSGI server but based on gevent wsgi server
+    so it can handle multiple requests at the same time.
+    """
     def __init__(self, listener=('127.0.0.1', 8000)):
         self.listener = listener
         self.server = None
@@ -22,8 +26,11 @@ class WsgiServer(BaseServer):
         self.server.serve_forever()
 
 
-class MultiCoreWsgiServer(MultiServer):
-    def __init__(self, number=2, worker_class=WsgiServer, host='127.0.0.1', port=8000):
+class MultiWsgiServer(MultiServer):
+    """
+    WSGI server with multicore support.
+    """
+    def __init__(self, workers=2, worker_class=WsgiServer, host='127.0.0.1', port=8000):
         self.listener = _tcp_listener((host, port))
-        super(MultiCoreWsgiServer, self).__init__(number * [(worker_class, [], {'listener': self.listener})])
+        super(MultiWsgiServer, self).__init__(workers * [(worker_class, [], {'listener': self.listener})])
 

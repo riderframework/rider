@@ -2,6 +2,9 @@ from rider.http import HTTP_200
 
 
 class ResponseSetter(object):
+    """
+    Response wrapper
+    """
     status = HTTP_200
     content_type = 'text/plain'
     response_type = 'body'

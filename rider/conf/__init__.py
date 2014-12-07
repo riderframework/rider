@@ -1,17 +1,17 @@
 BASE_DIR = ''
 BASE_URL = ''
 
+
+#TODO RETHINK
 MAIN_SERVER = 'rider.core.server.MultiServer'
+WSGI_SERVER = 'rider.wsgi.server.MultiWsgiServer'
+TASK_SERVER = 'rider.wsgi.server.MultiTaskServer'
 
 SERVERS = (
-    # ('rider.wsgi.server.MultiCoreWsgiServer', [], {
-    #     'number': 2,
-    #     'worker_class': 'rider.wsgi.server.WsgiServer'
-    # }),
-    ('rider.wsgi.server.WsgiServer', [], {}),
-    ('rider.tasks.server.TaskServer', [], {}),
+    (WSGI_SERVER, [], {}),
+    (TASK_SERVER, [], {}),
 )
-
+#
 
 class ConfigurationError(Exception):
     pass
