@@ -4,8 +4,8 @@ BASE_URL = ''
 
 #TODO RETHINK
 MAIN_SERVER = 'rider.core.server.MultiServer'
-WSGI_SERVER = 'rider.wsgi.server.MultiWsgiServer'
-TASK_SERVER = 'rider.wsgi.server.MultiTaskServer'
+WSGI_SERVER = 'rider.wsgi.server.WsgiServer'
+TASK_SERVER = 'rider.tasks.server.TaskServer'
 
 SERVERS = (
     (WSGI_SERVER, [], {}),
@@ -22,7 +22,7 @@ def configure(source, target=''):
     configure
     """
     from types import ModuleType
-    from rider.utils import import_object
+    # from rider.utils import import_object
 
     if type(source) == str:
         source = __import__(source)

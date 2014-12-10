@@ -43,7 +43,7 @@ class MultiServer(BaseServer):
     def __init__(self, servers):
         self.servers = {}
         for server_cls, args, kwargs in servers:
-            if not isinstance(server_cls, BaseServer):
+            if not (isinstance(server_cls, type) and issubclass(server_cls, BaseServer)):  # no support for old-style class is needed
                 server_cls = import_object(server_cls)
             server = server_cls(*args, **kwargs)
             self.servers[server] = None

@@ -1,28 +1,32 @@
 import time
 from rider.core.server import BaseServer
+from rider.tasks import application
+from celery.worker import WorkController
 
 
 class TaskServer(BaseServer):
     """
-    TODO
+    Basic single threaded task server but based on celery worker
+    so it can handle multiple requests at the same time.
     """
-
-    def __init__(self):
-        self._stop = False
-        self._stopped = True
+    def __init__(self, concurrency=1):
+        self.work_controller = None
         super(TaskServer, self).__init__()
 
+    def stop(self):
+        import os
+        print 'stop taskserver', os.getpid()
+        print self.work_controller.state
+        self.work_controller.stop()
+        print 'stopped taskserver', os.getpid()
+        print self.work_controller.state
+        super(TaskServer, self).stop()
+
     def start(self):
-        self._stopped = False
-        while not self._stop:
-            time.sleep(0.01)
-        self._stopped = True
+        self.work_controller = WorkController(app=application, concurrency=2)
         super(TaskServer, self).start()
 
-    def stop(self):
-        timeout = 0.2
-        self._stop = True
-        time_start = time.time()
-        while not self._stopped and time.time() - time_start < timeout:
-            time.sleep(0.001)
-
+    def run(self):
+        print 'prerun'
+        self.work_controller.start()
+        print 'postrun'
