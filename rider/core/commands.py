@@ -62,7 +62,8 @@ def run(out, args):
     """
     starts server
     """
-
+    from gevent import monkey
+    monkey.patch_all()
     if out:
         try:
             cd = args[0]

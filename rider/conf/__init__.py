@@ -4,7 +4,7 @@ BASE_URL = ''
 
 #TODO RETHINK
 MAIN_SERVER = 'rider.core.server.MultiServer'
-WSGI_SERVER = 'rider.wsgi.server.WsgiServer'
+WSGI_SERVER = 'rider.wsgi.server.MultiWsgiServer'
 TASK_SERVER = 'rider.tasks.server.TaskServer'
 
 SERVERS = (
@@ -52,3 +52,4 @@ def configure(source, target=''):
             setattr(globals()[target], attr, value)
 
 configure(__import__('rider.conf.templates'))
+configure(__import__('rider.conf.tasks'))

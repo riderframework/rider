@@ -67,3 +67,7 @@ class MultiServer(BaseServer):
             process.start()
             self.servers[server] = process
         super(MultiServer, self).start()
+
+    def run(self):
+        for server, process in self.servers.iteritems():
+            process.join()
