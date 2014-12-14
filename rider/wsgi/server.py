@@ -4,6 +4,13 @@ from gevent.server import _tcp_listener
 from rider.core.server import BaseServer, MultiServer
 
 
+class WsgiHandler(pywsgi.WSGIHandler):
+    def log_request(self):
+        #TODO logging module
+        print self.format_request()
+
+
+
 class WsgiServer(BaseServer):
     """
     Basic single threaded WSGI server but based on gevent wsgi server
@@ -19,7 +26,8 @@ class WsgiServer(BaseServer):
         super(WsgiServer, self).stop()
 
     def start(self):
-        self.server = pywsgi.WSGIServer(self.listener, application)
+        self.title = 'rider: wsgi server'
+        self.server = pywsgi.WSGIServer(self.listener, application, handler_class=WsgiHandler)
         super(WsgiServer, self).start()
 
     def run(self):
@@ -31,6 +39,13 @@ class MultiWsgiServer(MultiServer):
     WSGI server with multicore support.
     """
     def __init__(self, workers=2, worker_class=WsgiServer, host='127.0.0.1', port=8000):
-        self.listener = _tcp_listener((host, port))
+        self.listener = _tcp_listener((host, port), reuse_addr=1)
         super(MultiWsgiServer, self).__init__(workers * [(worker_class, [], {'listener': self.listener})])
 
+    def stop(self):
+        self.listener.close()
+        super(MultiWsgiServer, self).stop()
+
+    def start(self):
+        self.title = 'rider: multi wsgi server'
+        super(MultiWsgiServer, self).start()

@@ -7,6 +7,7 @@ from rider.utils import import_object
 import os
 import signal
 import sys
+from setproctitle import setproctitle, getproctitle
 
 
 class BaseServer(object):
@@ -14,6 +15,14 @@ class BaseServer(object):
     Unificate signal handling and processing.
     Define basic methods every server must implement.
     """
+    def __set_title(self, title):
+        setproctitle(title)
+
+    def __get_title(self):
+        return getproctitle()
+
+    title = property(__get_title, __set_title)
+
     def __stop(self, signum, frame):
         self.stop()
 
