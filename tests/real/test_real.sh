@@ -12,6 +12,7 @@ rider run project
 #
 cd project
 coverage combine
-coverage report
+#coverage report
+cp .coverage ../
 cd ..
-rm -rf real/project
+rm -rf project
