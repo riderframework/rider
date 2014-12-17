@@ -22,7 +22,7 @@ class ViewDecorator(object):
                 def function(request):
                     ...
                 '''
-                instance.http_methods = ['GET']
+                instance.http_methods = HTTP_METHODS
                 return instance(function_or_http_method)
 
             elif isinstance(function_or_http_method, str):

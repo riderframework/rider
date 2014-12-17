@@ -3,3 +3,4 @@ branch = True
 include = rider
 source = rider
 omit = */rider/conf/project_template/*
+concurrency = gevent
