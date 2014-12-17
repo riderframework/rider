@@ -1,10 +1,10 @@
 language: python
 install: pip install tox coveralls --use-mirrors
 env:
-  - TOX_ENV=py26_real
-  - TOX_ENV=py27_real
-  - TOX_ENV=py26_cython_real
-  - TOX_ENV=py27_cython_real
+  - TOX_ENV=py26
+  - TOX_ENV=py27
+  - TOX_ENV=py26_cython
+  - TOX_ENV=py27_cython
 script:
   - tox -e $TOX_ENV
 after_success: cd tests && coveralls
