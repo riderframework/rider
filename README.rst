@@ -1,4 +1,5 @@
-Rider 
+Rider
+
 .. image:: https://travis-ci.org/riderframework/rider.svg?branch=master
   :target: https://travis-ci.org/riderframework/rider 
 .. image:: https://coveralls.io/repos/riderframework/rider/badge.png?branch=master 
