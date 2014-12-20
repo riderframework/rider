@@ -15,9 +15,9 @@ Rider
 Full-stack Python Web Application Framework
 - powered by:
   - Falcon (http://falconframework.org/)
-  - Jinja2 (http://jinja.pocoo.org/)
   - gevent (http://gevent.org/)
   - Celery (http://www.celeryproject.org/)
+  - Jinja2 (http://jinja.pocoo.org/)
   - SQLAlchemy
   - WTForms
 
