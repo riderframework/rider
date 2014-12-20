@@ -25,9 +25,10 @@ Full-stack Python Web Application Framework
 Install
 -------
 
-```bash
-$ pip install rider==0.2.0a
-```
+::
+
+  pip install rider==0.2.0a
+
 
 Development Cycle
 -----------------
