@@ -1,4 +1,6 @@
 Rider
+=====
+Full-stack Python Web Application Framework
 
 .. image:: https://travis-ci.org/riderframework/rider.svg?branch=master
   :target: https://travis-ci.org/riderframework/rider 
@@ -10,10 +12,9 @@ Rider
 .. image:: https://pypip.in/license/Rider/badge.svg
   :target: https://pypi.python.org/pypi/Rider/
   :alt: License
-=====
 
-Full-stack Python Web Application Framework
-- powered by:
+Powered by:
+-----------
   - Falcon (http://falconframework.org/)
   - gevent (http://gevent.org/)
   - Celery (http://www.celeryproject.org/)
