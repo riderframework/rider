@@ -1,4 +1,6 @@
 Rider
+=====
+Full-stack Python Web Application Framework
 
 .. image:: https://travis-ci.org/riderframework/rider.svg?branch=master
   :target: https://travis-ci.org/riderframework/rider 
@@ -10,24 +12,24 @@ Rider
 .. image:: https://pypip.in/license/Rider/badge.svg
   :target: https://pypi.python.org/pypi/Rider/
   :alt: License
-=====
 
-Full-stack Python Web Application Framework
-- powered by:
+Powered by:
+-----------
   - Falcon (http://falconframework.org/)
-  - Jinja2 (http://jinja.pocoo.org/)
   - gevent (http://gevent.org/)
   - Celery (http://www.celeryproject.org/)
-  - SQLAlchemy
+  - Jinja2 (http://jinja.pocoo.org/)
+  - SQLAlchemy + Elixir (http://elixir.ematia.de/trac/)
   - WTForms
 
 
 Install
 -------
 
-```bash
-$ pip install rider==0.2.0a
-```
+::
+
+  pip install rider==0.2.0a
+
 
 Development Cycle
 -----------------
