@@ -3,6 +3,6 @@
 
 if __name__ == "__main__":
     from rider.core.commands import main
-    main(True)
+    main()
 
 

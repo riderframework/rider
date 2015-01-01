@@ -1,9 +1,7 @@
 import sys
-from os import chdir, getcwd
+from os import chdir, getcwd, path
 
 
-def load_project(cd=''):
-    if cd:
-        chdir(cd)
-    sys.path.append(getcwd())
+def load_project(app_dir=''):
+    sys.path.append(path.join(getcwd(), app_dir))
     __import__('__init__')

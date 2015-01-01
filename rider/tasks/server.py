@@ -1,4 +1,4 @@
-from rider.core.server import BaseServer, MultiServer
+from rider.core.server import BaseServer, PreforkedServer
 from rider.tasks import application
 from celery.worker import WorkController
 
@@ -18,7 +18,6 @@ class TaskServer(BaseServer):
         super(TaskServer, self).stop()
 
     def start(self):
-        self.title = 'rider: tasks server'
         self.work_controller = WorkController(app=application, concurrency=self.concurrency, pool_cls='gevent')
         super(TaskServer, self).start()
 
@@ -26,13 +25,12 @@ class TaskServer(BaseServer):
         self.work_controller.start()
 
 
-class MultiTaskServer(MultiServer):
+class MultiCoreTaskServer(PreforkedServer):
     """
     Task server with multicore support.
     """
     def __init__(self, workers=2, worker_class=TaskServer):
-        super(MultiTaskServer, self).__init__(workers * [(worker_class, [], {})])
+        super(MultiCoreTaskServer, self).__init__(workers * [(worker_class, [], {})])
 
     def start(self):
-        self.title = 'rider: multi task server'
-        super(MultiTaskServer, self).start()
+        super(MultiCoreTaskServer, self).start()

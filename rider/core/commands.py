@@ -1,21 +1,21 @@
-from os import path
+from os import path, chdir
 import sys
 from shutil import copytree, ignore_patterns
 from rider.core.utils import load_project
 from rider.utils import import_object
 
 
-def main(out=False):
+def main():
     args = sys.argv[1:]
     if len(args) == 0:
-        get_help(out)
+        get_help()
     elif args[0] in COMMANDS:
-        COMMANDS[args[0]](out, args[1:])
+        COMMANDS[args[0]](args[1:])
     else:
         print("No command '%s' found" % args[0])
 
 
-def get_help(out, args=[]):
+def get_help(args=[]):
     """
     shows help about command
     """
@@ -31,7 +31,7 @@ def get_help(out, args=[]):
             print('%s\n' % command)
 
 
-def create(out, args):
+def create(args):
     """
     creates project or app
     """
@@ -58,22 +58,22 @@ def create(out, args):
         copytree(path.join(path.dirname(__file__), '..', 'conf/app_template'), path.join(project, app), ignore=ignore)
 
 
-def run(out, args):
+def run(args):
     """
-    starts server
+    starts all servers
     """
     from gevent import monkey
     monkey.patch_all()
-    if out:
-        try:
-            cd = args[0]
-        except IndexError:
-            cd = ''
-        load_project(cd)
+
+    load_project(args[0])
 
     from rider import conf
     if any(conf.SERVERS):
-        server = import_object(conf.MAIN_SERVER)(conf.SERVERS)
+        if len(args) > 1:
+            server_cls = import_object(args[1])
+            server = server_cls()
+        else:  # main server
+            server = import_object(conf.MAIN_SERVER)(conf.SERVERS)
         server.start()
     else:
         #TODO nicer exception
@@ -83,5 +83,5 @@ def run(out, args):
 COMMANDS = {
     'help': get_help,
     'create': create,
-    'run': run
+    'run': run,
 }

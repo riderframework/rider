@@ -3,9 +3,9 @@ BASE_URL = ''
 
 
 #TODO RETHINK
-MAIN_SERVER = 'rider.core.server.MultiServer'
-WSGI_SERVER = 'rider.wsgi.server.MultiWsgiServer'
-TASK_SERVER = 'rider.tasks.server.MultiTaskServer'
+MAIN_SERVER = 'rider.core.server.MainServer'
+WSGI_SERVER = 'rider.wsgi.server.MultiCoreWsgiServer'
+TASK_SERVER = 'rider.tasks.server.MultiCoreTaskServer'
 
 SERVERS = (
     (WSGI_SERVER, [], {}),

@@ -2,12 +2,12 @@
 manages all servers
 """
 from multiprocessing import Process
+from subprocess import Popen
 from rider.utils import import_object
 
 import os
 import signal
 import sys
-from setproctitle import setproctitle, getproctitle
 
 
 class BaseServer(object):
@@ -15,13 +15,6 @@ class BaseServer(object):
     Unificate signal handling and processing.
     Define basic methods every server must implement.
     """
-    def __set_title(self, title):
-        setproctitle(title)
-
-    def __get_title(self):
-        return getproctitle()
-
-    title = property(__get_title, __set_title)
 
     def __stop(self, signum, frame):
         self.stop()
@@ -45,29 +38,30 @@ class BaseServer(object):
         pass
 
 
-class MultiServer(BaseServer):
+#TODO generalize
+class PreforkedServer(BaseServer):
     """
-    Server that can start another servers and control them via signals.
+    Server that can start another servers as a fork and control them via signals.
     """
-    def __init__(self, servers):
+    def __init__(self, servers_definition):
         self.servers = {}
-        for server_cls, args, kwargs in servers:
+        for server_cls, args, kwargs in servers_definition:
             if not (isinstance(server_cls, type) and issubclass(server_cls, BaseServer)):  # no support for old-style class is needed
                 server_cls = import_object(server_cls)
             server = server_cls(*args, **kwargs)
             self.servers[server] = None
-        super(MultiServer, self).__init__()
+        super(PreforkedServer, self).__init__()
 
     def stop(self):
         for server, process in self.servers.iteritems():
             if process:
                 os.kill(process.pid, signal.SIGTERM)
-        super(MultiServer, self).stop()
+        super(PreforkedServer, self).stop()
 
     def quit(self):
         for server, process in self.servers.iteritems():
             process.terminate()
-        super(MultiServer, self).quit()
+        super(PreforkedServer, self).quit()
         sys.exit(0)
 
     def start(self):
@@ -75,8 +69,48 @@ class MultiServer(BaseServer):
             process = Process(target=server.start)
             process.start()
             self.servers[server] = process
-        super(MultiServer, self).start()
+        super(PreforkedServer, self).start()
 
     def run(self):
         for server, process in self.servers.iteritems():
             process.join()
+
+
+#TODO generalize
+class SubprocessServer(BaseServer):
+    """
+    Server that can start another servers as a subprocess and control them via signals.
+    """
+    def __init__(self, servers_definition):
+        self.servers = {}
+        self.servers_definition = servers_definition
+
+        super(SubprocessServer, self).__init__()
+
+    def stop(self):
+        for server, process in self.servers.iteritems():
+            if process:
+                process.terminate()
+        super(SubprocessServer, self).stop()
+
+    def quit(self):
+        for server, process in self.servers.iteritems():
+            if process:
+                process.kill()
+        super(SubprocessServer, self).quit()
+        sys.exit(0)
+
+    def start(self):
+        for server_cls, args, kwargs in self.servers_definition:
+            process = Popen(sys.argv + [server_cls])
+            self.servers[server_cls] = process
+        super(SubprocessServer, self).start()
+
+    def run(self):
+        for server, process in self.servers.iteritems():
+            process.wait()
+
+
+#TODO specialize
+class MainServer(SubprocessServer):
+    pass
