@@ -19,7 +19,7 @@ Powered by:
   - gevent (http://gevent.org/)
   - Celery (http://www.celeryproject.org/)
   - Jinja2 (http://jinja.pocoo.org/)
-  - SQLAlchemy
+  - SQLAlchemy + Elixir (http://elixir.ematia.de/trac/)
   - WTForms
 
 
